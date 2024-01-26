@@ -9,7 +9,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-export default function Home() {
+export default function Technology() {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xl" sx={styles.containerBody}>
