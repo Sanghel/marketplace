@@ -11,12 +11,39 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 
-export default function ProductCard() {
+interface ProductCard {
+  product: Product;
+}
+
+const ProductCard: React.FC<ProductCard> = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
   const setFavorite = () => {
     setIsFavorite(!isFavorite)
+  }
+
+  const discount = (price: number) => {
+    if (price >= 80) return '30'
+    if (price >= 50) return '20'
+    if (price >= 30) return '10'
+  };
+
+  const newPrice = (price: number) => {
+    if (price < 30) return price
+    const discountProduct = discount(price)
+    const priceWithDiscount = (price * (1 - (Number(discountProduct) / 100))).toFixed(2)
+    return priceWithDiscount
+  }
+
+  const pricePerMonth = (price: number) => {
+    const feeValue = (price / 6).toFixed(2)
+    return feeValue
+  }
+
+  const pricePerWeek = (price: number) => {
+    const feeValue = (price / 24).toFixed(2)
+    return feeValue
   }
 
   return (
@@ -26,44 +53,48 @@ export default function ProductCard() {
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
       >
-        <CardMedia
-          component="img"
-          alt="green iguana"
-          height="300"
-          image={isHovered ? "https://m.media-amazon.com/images/I/71PdihSdESL._AC_SX466_.jpg" : "https://m.media-amazon.com/images/I/51SQeaKj7hL._AC_SX466_.jpg"}
-          sx={{ objectFit: 'contain', padding: 2, transition: 'all 0.3s'  }}
-        />
+        {product.images && (
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            height="300"
+            image={product.images[0]}
+            sx={{ objectFit: 'contain', padding: 2, transition: 'all 0.3s'  }}
+          />
+        )}
         <IconButton sx={styles.favoriteIcon} onClick={setFavorite}>
           {isFavorite && <FavoriteIcon color="secondary" />}
           {!isFavorite && <FavoriteBorderOutlinedIcon color="secondary" />}
         </IconButton>
-        {!isHovered && (
+        {(!isHovered && product.price >= 30) && (
           <Container sx={styles.discount}>
-            <Typography variant="h3" color="white" component="div" sx={{ margin: 0, fontWeight: 'normal', fontSize: '30px' }}>40%</Typography>
+            <Typography variant="h3" color="white" component="div" sx={{ margin: 0, fontWeight: 'normal', fontSize: '40px' }}>{discount(product.price)}%</Typography>
           </Container>
         )}
         <CardContent sx={styles.cardContent}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={6} alignItems="center">
-              <Typography gutterBottom variant="h6" component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                Lizard
+          <Grid container spacing={0.5} alignItems="center">
+            <Grid item xs={7} alignItems="center" sx={styles.cardGridItem}>
+              <Typography gutterBottom variant="h6" component="span" sx={{ fontSize: '0.7rem', fontWeight: 'bold', textWrap: 'balance', textAlign: 'left' }}>
+                {product.title}
               </Typography>
               <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                REVIEW
+                STARS
               </Typography>
             </Grid>
-            <Grid item xs={6} justifySelf="end">
-              <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '2rem', marginBottom: 0 }}>
-                $3,499
+            <Grid item xs={5} justifySelf="end" sx={styles.cardGridItem}>
+              <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
+                {newPrice(product.price)}$
               </Typography>
-              <Typography gutterBottom variant="body1" component="div" sx={{ textAlign: 'right', fontSize: '1.2rem' , textDecoration: 'line-through', margin: 'auto', color: '#7D879C' }}>
-                $1,500
-              </Typography>
+              {product.price >= 30 && (
+                <Typography gutterBottom variant="body1" component="div" sx={{ textAlign: 'right', fontSize: '1rem' , textDecoration: 'line-through', color: '#7D879C' }}>
+                  {product.price}$
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body2" sx={{ fontSize: '0.7rem', color: '#7D879C' }}>
-                $120 p/semana<br />
-                o $120 p/mes
+                {pricePerWeek(product.price)}$ p/sem<br />
+                o {pricePerMonth(product.price)}$ p/mes
               </Typography>
             </Grid>
             <Grid item xs={6}>
@@ -86,8 +117,8 @@ const theme = createTheme({
 const styles = {
   card: {
     position: 'relative',
-    maxWidth: 250,
-    maxHeight: 400,
+    width: 300,
+    minHeight: 460,
     transition: 'boxShadow 0.3s',
     borderRadius: 3,
     '&:hover': {
@@ -97,17 +128,17 @@ const styles = {
   },
   favoriteIcon: {
     position: 'absolute',
-    top: 5,
-    right: 5
+    top: 15,
+    right: 15
   },
   discount: {
-    height: 70,
-    width: 70,
+    height: 90,
+    width: 90,
     borderRadius: '50%',
     backgroundColor: '#E6406D',
     position: 'absolute',
-    left: 10,
-    bottom: 170,
+    left: 25,
+    bottom: 190,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -115,5 +146,12 @@ const styles = {
   },
   cardContent: {
     boxShadow: '0px -6px 10px #0000000D'
+  },
+  cardGridItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   }
 }
+
+export default ProductCard

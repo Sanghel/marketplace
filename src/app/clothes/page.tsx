@@ -11,11 +11,8 @@ export default function Clothes() {
   return (
     <ThemeProvider theme={theme} >
       <Grid container maxWidth="xl" spacing={2} padding={2} paddingInline={6} justifyContent="center">
-        <Grid item md={3} sx={styles.gridContainer}>
-          <Sidebar />
-        </Grid>
         <Grid item md={9} sx={styles.gridContainer} >
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
               <ProductCard />
             </Grid>
@@ -31,7 +28,7 @@ export default function Clothes() {
             <Grid item xs={12} sm={6} md={4}>
               <ProductCard />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
         
       </Grid>
