@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AppBar, Box, Button, Stack } from '@mui/material'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const currentPath = Array.isArray(pathname) ? pathname[0] : pathname;
 
   return (
     <AppBar position='static' sx={styles.navbar}>
@@ -20,8 +21,10 @@ export default function Navbar() {
           {links.map((link,idx) => (
             <Button
               key={idx}
-              href={link.to}
-              sx={link.to === pathname ? styles.active : styles.inactive}
+              href={link.path}
+              sx={currentPath.includes(link.path) ? styles.active : styles.inactive}
+              // sx={link.title === activeLink ? styles.active : styles.inactive}
+              // sx={link.path === pathname ? styles.active : styles.inactive}
             >
               {link.title}
             </Button>
@@ -43,19 +46,27 @@ export default function Navbar() {
 const links = [
   {
     title: 'Home',
-    to: '/'
+    path: '/'
   },
   {
     title: 'Ropa',
-    to: '/clothes'
+    path: '/dashboard/clothes'
   },
   {
-    title: 'Tecnologia',
-    to: '/technology'
+    title: 'Electronicos',
+    path: '/dashboard/electronics'
+  },
+  {
+    title: 'Muebles',
+    path: '/dashboard/furniture'
   },
   {
     title: 'Zapatos',
-    to: '/shoes'
+    path: '/dashboard/shoes'
+  },
+  {
+    title: 'Miscelaneos',
+    path: '/dashboard/miscellaneous'
   },
 ]
 

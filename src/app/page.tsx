@@ -2,38 +2,41 @@
 
 import { useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
+// import { Button, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Sidebar from "./components/Sidebar";
-import ProductCard from "./components/ProductCard";
-import { MacropayContextProvider } from "./context";
+// import Sidebar from "./components/Sidebar";
+// import ProductCard from "./components/ProductCard";
+// import { MacropayContextProvider } from "./context";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  const [products, setProducts] = useState<Array<Product>>([])
-  const [categoryChecked, setCategoryChecked] = useState<{}>({
-    Clothes: false,
-    Electronics: false,
-    Furniture: false,
-    Shoes: false,
-    Miscellaneous: false,
-  })
-  const [filterCheckProducts, setFilterCheckProducts] = useState<Array<Product>>([])
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
+  // const [products, setProducts] = useState<Array<Product>>([])
+  // const [categoryChecked, setCategoryChecked] = useState<{}>({
+  //   Clothes: false,
+  //   Electronics: false,
+  //   Furniture: false,
+  //   Shoes: false,
+  //   Miscellaneous: false,
+  // })
+  // const [filterCheckProducts, setFilterCheckProducts] = useState<Array<Product>>([])
+  // const [minPrice, setMinPrice] = useState('');
+  // const [maxPrice, setMaxPrice] = useState('');
+  // const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
 
   useEffect(() => {
-    fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=35')
-      .then(res => res.json())
-      .then(data => setProducts(data))
+    redirect('/dashboard')
+    // fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=35')
+    //   .then(res => res.json())
+    //   .then(data => setProducts(data))
   }, []);
 
   return (
     <ThemeProvider theme={theme} >
-      <MacropayContextProvider
+      HOME PAGE
+      {/* <MacropayContextProvider
         value={{
           products,
           setProducts,
@@ -56,7 +59,7 @@ export default function Home() {
             </Grid>
             <Grid item sm={12} md={9} sx={styles.gridContainerCards}>
               <Grid container spacing={2}>
-                {/* {minPrice && filterProductsByMinPrice?.map((product) => (
+                {minPrice && filterProductsByMinPrice?.map((product) => (
                   <Grid item xs={12} sm={6} md={4} key={product.id}>
                     <ProductCard product={product} />
                   </Grid>
@@ -65,7 +68,7 @@ export default function Home() {
                   <Grid item xs={12} sm={6} md={4} key={product.id}>
                     <ProductCard product={product} />
                   </Grid>
-                ))} */}
+                ))}
                 {(filterCheckProducts.length > 0) && filterCheckProducts?.map((product) => (
                   <Grid item xs={12} sm={6} lg={4} key={product.id}>
                     <ProductCard product={product} />
@@ -84,7 +87,7 @@ export default function Home() {
               </Grid>
             </Grid>
           </Grid>
-      </MacropayContextProvider>
+      </MacropayContextProvider> */}
     </ThemeProvider>
   );
 }
@@ -96,25 +99,25 @@ const theme = createTheme({
   },
 });
 
-const styles = {
-  containerBody: {
-    height: 'auto',
-    display: 'flex',
-    gap: '2rem',
-  },
-  gridContainer: {
-    position: 'sticky',
-    display: 'flex',
-    height: '600px',
-    justifyCcontent: 'center',
-    '@media (max-width: 900px)': {
-      display: 'none'
-    }
-  },
-  gridContainerCards: {
-    display: 'flex',
-    height: '1500px',
-    justifyCcontent: 'center',
-    overflowY: 'scroll'
-  }
-}
+// const styles = {
+//   containerBody: {
+//     height: 'auto',
+//     display: 'flex',
+//     gap: '2rem',
+//   },
+//   gridContainer: {
+//     position: 'sticky',
+//     display: 'flex',
+//     height: '600px',
+//     justifyCcontent: 'center',
+//     '@media (max-width: 900px)': {
+//       display: 'none'
+//     }
+//   },
+//   gridContainerCards: {
+//     display: 'flex',
+//     height: '1500px',
+//     justifyCcontent: 'center',
+//     overflowY: 'scroll'
+//   }
+// }

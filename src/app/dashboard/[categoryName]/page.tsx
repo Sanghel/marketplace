@@ -4,8 +4,8 @@ import Image from "next/image";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Button, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import Sidebar from "../components/Sidebar";
-import ProductCard from "../components/ProductCard";
+import Sidebar from "../../components/Sidebar";
+import ProductCard from "../../components/ProductCard";
 
 export default function CategoryPage() {
   return (

@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 import ModalProduct from '../ModalProduct';
 import { useRouter } from 'next/navigation';
+import { discount, pricePerMonth, pricePerWeek, newPrice } from '@/app/utils/pricesAndDiscounts';
 
 interface ProductCard {
   product: Product;
@@ -27,34 +28,11 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 
   const redirectProductDetail = (categoryName: string, id: number) => {
     const newCategoryName = categoryName.toLowerCase()
-    router.push(`/${newCategoryName}/${id}`)
+    router.push(`/dashboard/${newCategoryName}/${id}`)
   }
 
   const setFavorite = () => {
     setIsFavorite(!isFavorite)
-  }
-
-  const discount = (price: number) => {
-    if (price >= 80) return '30'
-    if (price >= 50) return '20'
-    if (price >= 30) return '10'
-  };
-
-  const newPrice = (price: number) => {
-    if (price < 30) return price
-    const discountProduct = discount(price)
-    const priceWithDiscount = (price * (1 - (Number(discountProduct) / 100))).toFixed(2)
-    return priceWithDiscount
-  }
-
-  const pricePerMonth = (price: number) => {
-    const feeValue = (price / 6).toFixed(2)
-    return feeValue
-  }
-
-  const pricePerWeek = (price: number) => {
-    const feeValue = (price / 24).toFixed(2)
-    return feeValue
   }
 
   return (
