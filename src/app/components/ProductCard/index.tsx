@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import { createTheme, ThemeProvider, makeStyles } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -10,6 +12,8 @@ import { Container, createStyles, Grid, IconButton, Stack } from '@mui/material'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
+import ModalProduct from '../ModalProduct';
+import { useRouter } from 'next/navigation';
 
 interface ProductCard {
   product: Product;
@@ -18,6 +22,13 @@ interface ProductCard {
 const ProductCard: React.FC<ProductCard> = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const router = useRouter()
+
+  const redirectProductDetail = (categoryName: string, id: number) => {
+    const newCategoryName = categoryName.toLowerCase()
+    router.push(`/${newCategoryName}/${id}`)
+  }
 
   const setFavorite = () => {
     setIsFavorite(!isFavorite)
@@ -48,6 +59,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      {isModalOpen && <ModalProduct isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} product={product} pricePerWeek={pricePerWeek} />}
       <Card
         sx={styles.card}
         onMouseOver={() => setIsHovered(true)}
@@ -59,7 +71,9 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
             alt="green iguana"
             height="300"
             image={product.images[0]}
+            // image={isHovered && product.images.length > 1 ? product.images[1] : product.images[0]}
             sx={{ objectFit: 'contain', padding: 2, transition: 'all 0.3s'  }}
+            onClick={() => redirectProductDetail(product.category.name, product.id)}
           />
         )}
         <IconButton sx={styles.favoriteIcon} onClick={setFavorite}>
@@ -74,7 +88,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
         <CardContent sx={styles.cardContent}>
           <Grid container spacing={0.5} alignItems="center">
             <Grid item xs={7} alignItems="center" sx={styles.cardGridItem}>
-              <Typography gutterBottom variant="h6" component="span" sx={{ fontSize: '0.7rem', fontWeight: 'bold', textWrap: 'balance', textAlign: 'left' }}>
+              <Typography gutterBottom variant="h6" component="span" sx={{ fontSize: '0.7rem', fontWeight: 'bold', textWrap: 'balance', textAlign: 'left' }} onClick={() => redirectProductDetail( product.category.name, product.id)}>
                 {product.title}
               </Typography>
               <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
@@ -83,22 +97,30 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
             </Grid>
             <Grid item xs={5} justifySelf="end" sx={styles.cardGridItem}>
               <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
-                {newPrice(product.price)}$
+                ${newPrice(product.price)}
               </Typography>
               {product.price >= 30 && (
                 <Typography gutterBottom variant="body1" component="div" sx={{ textAlign: 'right', fontSize: '1rem' , textDecoration: 'line-through', color: '#7D879C' }}>
-                  {product.price}$
+                  ${product.price}
                 </Typography>
               )}
             </Grid>
             <Grid item xs={6}>
               <Typography variant="body2" sx={{ fontSize: '0.7rem', color: '#7D879C' }}>
-                {pricePerWeek(product.price)}$ p/sem<br />
-                o {pricePerMonth(product.price)}$ p/mes
+                ${pricePerWeek(product.price)} p/sem<br />
+                o ${pricePerMonth(product.price)} p/mes
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Button variant="contained" color="secondary" size="small" sx={{ float: 'right', fontWeight: 'bold', textTransform: 'none', fontSize: '0.75rem' }}>Lo Quiero!</Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                sx={{ float: 'right', fontWeight: 'bold', textTransform: 'none', fontSize: '0.75rem' }}
+                onClick={() => setIsModalOpen(true)}
+              >
+                Lo Quiero!
+              </Button>
             </Grid>
           </Grid>
         </CardContent>
@@ -122,7 +144,6 @@ const styles = {
     transition: 'boxShadow 0.3s',
     borderRadius: 3,
     '&:hover': {
-      cursor: 'pointer',
       boxShadow: `0 4px 8px gray`,
     },
   },

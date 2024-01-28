@@ -7,7 +7,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Sidebar from "../components/Sidebar";
 import ProductCard from "../components/ProductCard";
 
-export default function Clothes() {
+export default function CategoryPage() {
   return (
     <ThemeProvider theme={theme} >
       <Grid container maxWidth="xl" spacing={2} padding={2} paddingInline={6} justifyContent="center">

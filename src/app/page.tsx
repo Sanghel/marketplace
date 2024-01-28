@@ -26,10 +26,10 @@ export default function Home() {
   const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
 
   useEffect(() => {
-    fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=100')
+    fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=35')
       .then(res => res.json())
       .then(data => setProducts(data))
-  }, [])
+  }, []);
 
   return (
     <ThemeProvider theme={theme} >
@@ -50,6 +50,7 @@ export default function Home() {
         }}
       >
           <Grid container maxWidth="xl" spacing={2} padding={2} paddingInline={6} justifyContent="center" sx={{ position: 'relative' }}>
+            
             <Grid item md={3} sx={styles.gridContainer}>
               <Sidebar />
             </Grid>
