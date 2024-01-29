@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Box, Typography, Modal, Card, CardMedia, Divider, Grid, createTheme, ThemeProvider, CardContent, Stack, Button } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import banner2 from '../../public/assets/banner2.png'
+import { newPrice } from '@/app/utils/pricesAndDiscounts';
 
 interface ModalProduct {
   product: Product
@@ -18,7 +19,7 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
   const newDescription = firstPointPosition !== -1 ? product.description.substring(0, firstPointPosition + 1) : product.description;
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Modal
         open={isModalOpen}
         onClose={handleClose}
@@ -43,7 +44,7 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
             <Box sx={{ display: 'flex', flexDirection: 'column', borderRadius: 0, width: '80%' }}>
               <CardContent>
                 <Typography variant="body1" color="primary" textAlign="right" sx={{ width: '100%' }}>
-                  ${product.price} x 1
+                  ${newPrice(product.price)} x 1
                 </Typography>
                 <Typography component="div" variant="h6" sx={{ textWrap: 'balance' }}>
                   {product.title}
@@ -69,7 +70,7 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
                 Subtotal
               </Typography>
               <Typography variant="body1" color="primary" textAlign="right" >
-                ${product.price}
+                ${newPrice(product.price)}
               </Typography>
             </Stack>
           </Box>
@@ -106,16 +107,16 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
           </Box>
         </Box>
       </Modal>
-    </ThemeProvider>
+    </>
   );
 }
 
-const theme = createTheme({
-  palette: {
-    primary: { main: '#004AC1' },
-    secondary: { main: '#FFD300'},
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: { main: '#004AC1' },
+//     secondary: { main: '#FFD300'},
+//   },
+// });
 
 const style = {
   boxContainer: {

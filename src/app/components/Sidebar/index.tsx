@@ -1,41 +1,42 @@
 import * as React from 'react';
-import { createTheme, ThemeProvider, Divider, Box, FormGroup, FormControlLabel, Checkbox, Typography } from '@mui/material';
+import { createTheme, ThemeProvider, Divider, Box, FormGroup, FormControlLabel, Checkbox, Typography, Rating } from '@mui/material';
 import FilterPrice from '../FilterPrice';
 import { useEffect, useState } from 'react';
 import { useMacropayContext } from '@/app/context';
+import { useParams } from 'next/navigation';
+import { brands } from '@/app/[category]/page';
 
 
 export default function Sidebar () {
-  const [categories, setCategories] = useState<Array<Category>>([])
-  const { products, categoryChecked, setCategoryChecked, filterCheckProducts, setFilterCheckProducts } = useMacropayContext()
-  
-  const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [brandsList, setBrandsList] = useState<string[]>()
+  const { products, categoryChecked, setCategoryChecked, filterCheckProducts, setFilterCheckProducts, rating, setRating } = useMacropayContext()
+  const params = useParams()
 
+  const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryChecked({ ...categoryChecked, [event.target.value]: event.target.checked });
     if (event.target.checked) {
-      const productsFilter = products.filter(product => product.category.name === event.target.value);
+      const productsFilter = products.filter(product => product.brand === event.target.value);
       setFilterCheckProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter]);
     } else {
-      const productsFilter = filterCheckProducts.filter(product => product.category.name !== event.target.value);
+      const productsFilter = filterCheckProducts.filter(product => product.brand !== event.target.value);
       setFilterCheckProducts([...productsFilter]);
     }
   }
 
   useEffect(() => {
-    fetch('https://api.escuelajs.co/api/v1/categories?offset=0&limit=5')
-      .then(res => res.json())
-      .then(data => setCategories(data))
+    if (params.category === 'shoes') setBrandsList(brands.shoes)
+    if (params.category === 'electronics') setBrandsList(brands.electronics)
+    if (params.category === 'furniture') setBrandsList(brands.furniture)
   }, [])
 
-
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Box padding={0} sx={styles.box}>
-        <Typography variant="body1" color="primary" sx={styles.text}>Categorias</Typography>
-          {categories.map(category => (
-            <div key={category.name} style={styles.checkboxContainer}>
-              <input type='checkbox' name='lenguajes' value={category.name} id={category.name} onChange={handleCheckbox}/>
-              <label htmlFor={category.name}>{category.name}</label>
+        <Typography variant="body1" color="primary" sx={styles.text}>Marcas</Typography>
+          {brandsList?.map(brand => (
+            <div key={brand} style={styles.checkboxContainer}>
+              <input type='checkbox' name='brands' value={brand} id={brand} onChange={handleCheckbox}/>
+              <label htmlFor={brand}>{brand}</label>
             </div>
           ))}
         <Divider />
@@ -43,22 +44,23 @@ export default function Sidebar () {
         <FilterPrice />
         <Divider />
         <Typography variant="body1" color="primary" sx={styles.text}>Reviews</Typography>
+        <Rating
+          name="simple-controlled"
+          value={rating}
+          onChange={(event, newValue) => {
+            setRating(newValue);
+          }}
+          sx={{ margin: '1rem 0 0 1rem' }}
+        />
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#013E9B' },
-    secondary: { main: '#FFD300'},
-  },
-});
 
 const styles = {
   box: {
     width: '100%',
-    height: '600px',
+    height: '480px',
     bgcolor: 'background.paper',
     boxShadow: '0px 3px 6px #00000029',
   },
@@ -73,7 +75,7 @@ const styles = {
     with: '100%',
     alignItems: 'center',
     marginLeft: '2.5rem',
-    marginBlock: '0.25rem',
+    marginBlock: '0.5rem',
     color: '#2B3445'
   }
 }

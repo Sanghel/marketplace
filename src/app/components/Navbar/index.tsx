@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   const pathname = usePathname();
-  const currentPath = Array.isArray(pathname) ? pathname[0] : pathname;
+  const [ _, slug ] = pathname.split('/')
 
   return (
     <AppBar position='static' sx={styles.navbar}>
@@ -22,22 +22,12 @@ export default function Navbar() {
             <Button
               key={idx}
               href={link.path}
-              sx={currentPath.includes(link.path) ? styles.active : styles.inactive}
-              // sx={link.title === activeLink ? styles.active : styles.inactive}
-              // sx={link.path === pathname ? styles.active : styles.inactive}
+              sx={(link.slug === slug )? styles.active : styles.inactive}
             >
               {link.title}
             </Button>
           ))}
         </Box>
-        {/* {links.map((link, idx) => (
-          <Link
-            key={idx}
-            href={link.to}
-          >
-            {link.title}
-          </Link>
-        ))} */}
       </Stack>
     </AppBar>
   )
@@ -46,28 +36,24 @@ export default function Navbar() {
 const links = [
   {
     title: 'Home',
-    path: '/'
+    path: '/',
+    slug: ''
   },
   {
-    title: 'Ropa',
-    path: '/dashboard/clothes'
-  },
-  {
-    title: 'Electronicos',
-    path: '/dashboard/electronics'
+    title: 'Electrónicos',
+    path: '/electronics',
+    slug: 'electronics'
   },
   {
     title: 'Muebles',
-    path: '/dashboard/furniture'
+    path: '/furniture',
+    slug: 'furniture'
   },
   {
     title: 'Zapatos',
-    path: '/dashboard/shoes'
-  },
-  {
-    title: 'Miscelaneos',
-    path: '/dashboard/miscellaneous'
-  },
+    path: '/shoes',
+    slug: 'shoes'
+  }
 ]
 
 const styles = {
@@ -90,13 +76,15 @@ const styles = {
   },
   active: {
     fontWeight: 'bold',
-    display: 'block',
     my: 2,
     color: '#013E9B',
     scale: '1.1',
     textTransform: 'none',
-    textDecoration: 'underline',
-    textDecorationColor: '#FFD300',
     textAlign: 'center',
+    backgroundImage: 'linear-gradient(to right, transparent 50%, #FFD300 50%)',
+    backgroundSize: '25% 2px',
+    backgroundPosition: '37.5% 75%',
+    backgroundRepeat: 'no-repeat',
+    display: 'inline-block'
   }
 }

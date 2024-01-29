@@ -12,7 +12,7 @@ import logo from '../../public/assets/logoSVG.svg'
 
 export default function Header() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container sx={styles.header} maxWidth="xl">
         <Stack
           direction="row"
@@ -39,17 +39,17 @@ export default function Header() {
         </Stack>
       </Container>
       <Navbar />
-    </ThemeProvider>
+    </>
   )
 }
 
 
-const theme = createTheme({
-  palette: {
-    primary: { main: '#013E9B' },
-    secondary: { main: '#FFD300'},
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     primary: { main: '#013E9B' },
+//     secondary: { main: '#FFD300'},
+//   },
+// });
 
 const styles = {
   header: {

@@ -1,12 +1,14 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
-import { Button, Container, Grid, Stack, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, Rating, Stack, ThemeProvider, Typography, createTheme } from '@mui/material';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useMacropayContext } from '@/app/context';
 import { newPrice, discount, pricePerWeek } from '@/app/utils/pricesAndDiscounts';
 
@@ -27,9 +29,10 @@ export default function ProductDetail() {
   useEffect(() => {
     const product = products.filter(product => product.id === Number(params.id))
     setProductDetail(product[0])
-  }, [params, productDetail, products])
+  }, [])
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container maxWidth="xl">
         <Stack
           direction="row"
@@ -60,7 +63,7 @@ export default function ProductDetail() {
               justifyContent="flex-start"
               alignItems="flex-start"
               gap={1}
-              sx={{ maxHeight: '300px', overflowY: 'scroll', overflowX: 'hidden' }}
+              sx={{ maxHeight: '300px', overflowY: 'scroll' }}
             >
               {productDetail?.images.map((image, idx) => (
                 <Container
@@ -92,6 +95,7 @@ export default function ProductDetail() {
                   <Typography color="black" variant="h5">
                     {productDetail?.title}
                   </Typography>
+                  <Rating name="read-only" value={productDetail?.stars} readOnly />
                 </Container>
                 <Container component="div" sx={{ padding: '0px!important', width: '40%' }}>
                   <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
@@ -129,6 +133,38 @@ export default function ProductDetail() {
                 </Typography>
               </div>
             </Container>
+            <Container sx={{ width: '70%', height: '120px', position: 'relative', margin: '1rem 0 0 auto', padding: '0px!important' }}>
+              <Box sx={styles.boxSteps}>
+                <div>
+                  <div style={styles.numberStep}>1</div>
+                  <Typography variant="body2" color="gray" fontSize={8} sx={{ fontWeight: 'bold' }}>
+                    Aplica a tu crédito!
+                  </Typography>
+                </div>
+                <Divider orientation="vertical" sx={{ position: 'relative' }}>
+                  <ArrowForwardIosIcon color='info' sx={{ position: 'absolute', fontSize: '0.8rem',  fontWeight: '', left: '6px', top: '38%', opacity: 0.7  }} />
+                </Divider>
+                <div>
+                  <div style={styles.numberStep}>2</div>
+                  <Typography variant="body2" color="gray" fontSize={8} sx={{ fontWeight: 'bold' }}>
+                    Verifica tu compra
+                  </Typography>
+                </div>
+                <Divider orientation="vertical" sx={{ position: 'relative' }}>
+                  <ArrowForwardIosIcon color='info' sx={{ position: 'absolute', fontSize: '0.8rem',  fontWeight: '', left: '6px', top: '38%', opacity: 0.7  }} />
+                </Divider>
+                <div>
+                  <div style={styles.numberStep}>3</div>
+                  <Typography variant="body2" color="gray" fontSize={8} sx={{ fontWeight: 'bold' }}>
+                    Disfruta tu producto
+                  </Typography>
+                </div>
+              </Box>
+              <Button variant="contained" color="secondary" sx={styles.button}>
+                Lo quiero a Crêdito
+                <ArrowCircleRightIcon fontSize='medium' color='primary' />
+              </Button>
+            </Container>
           </Grid>
         </Grid>
         <Typography fontSize={16} color="black" variant="h6" textAlign="left" paddingInline={3.5} marginTop={2}>
@@ -158,6 +194,14 @@ export default function ProductDetail() {
                   />
                 </Grid>
               )}
+              <Grid item sm={6}>
+                <Container
+                  component="img"
+                  alt={productDetail?.images[0]}
+                  src={productDetail?.images[0]}
+                  sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
+                />
+              </Grid>
             </Grid>
           </Grid>
           <Grid item sm={6}>
@@ -165,17 +209,9 @@ export default function ProductDetail() {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   )
 }
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#013E9B' },
-    secondary: { main: '#FFD300'},
-    info: { main: '#707070'}
-  },
-});
 
 const styles = {
   container: {
@@ -199,7 +235,7 @@ const styles = {
     backgroundColor: '#E6406D',
     position: 'absolute',
     left: 19,
-    bottom: 10,
+    bottom: 43,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -218,5 +254,39 @@ const styles = {
       height: '25px',
       color: '#2B3445'
     }
+  },
+  boxSteps: {
+    width: '100%',
+    padding: '0.5rem 1rem',
+    height: '80px',
+    backgroundColor: '#FFF',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: '1rem',
+    boxShadow: '0px 3px 6px #00000029',
+    borderRadius: '9px'
+  },
+  numberStep: {
+    backgroundColor: '#4B566B',
+    height: '20px',
+    width: '20px',
+    borderRadius: '50%',
+    marginBottom: '0.5rem',
+    color: '#fff',
+    display: 'grid',
+    placeItems: 'center',
+    fontSize: '0.5rem'
+  },
+  button: {
+    width: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    fontSize: '0.8rem',
+    padding: '0.5rem',
+    position: 'absolute',
+    right: '20px',
+    bottom: '12px'
   }
 }

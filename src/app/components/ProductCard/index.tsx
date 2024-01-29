@@ -3,12 +3,11 @@
 import * as React from 'react';
 import { createTheme, ThemeProvider, makeStyles } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Container, createStyles, Grid, IconButton, Stack } from '@mui/material';
+import { Container, createStyles, Grid, IconButton, Rating } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from 'react';
@@ -28,7 +27,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 
   const redirectProductDetail = (categoryName: string, id: number) => {
     const newCategoryName = categoryName.toLowerCase()
-    router.push(`/dashboard/${newCategoryName}/${id}`)
+    router.push(`/${newCategoryName}/${id}`)
   }
 
   const setFavorite = () => {
@@ -36,24 +35,22 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       {isModalOpen && <ModalProduct isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} product={product} pricePerWeek={pricePerWeek} />}
       <Card
         sx={styles.card}
         onMouseOver={() => setIsHovered(true)}
         onMouseOut={() => setIsHovered(false)}
       >
-        {product.images && (
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            height="300"
-            image={product.images[0]}
-            // image={isHovered && product.images.length > 1 ? product.images[1] : product.images[0]}
-            sx={{ objectFit: 'contain', padding: 2, transition: 'all 0.3s'  }}
-            onClick={() => redirectProductDetail(product.category.name, product.id)}
-          />
-        )}
+        <CardMedia
+          component="img"
+          alt={product.title}
+          height="300"
+          image={!!product.images[0] ? product.images[0] : 'https://pbs.twimg.com/profile_images/1708898362588577792/VfxT-nvi_400x400.jpg'}
+          // image={isHovered && product.images.length > 1 ? product.images[1] : product.images[0]}
+          sx={styles.cardImage}
+          onClick={() => redirectProductDetail(product.category.name, product.id)}
+        />
         <IconButton sx={styles.favoriteIcon} onClick={setFavorite}>
           {isFavorite && <FavoriteIcon color="secondary" />}
           {!isFavorite && <FavoriteBorderOutlinedIcon color="secondary" />}
@@ -65,13 +62,14 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
         )}
         <CardContent sx={styles.cardContent}>
           <Grid container spacing={0.5} alignItems="center">
-            <Grid item xs={7} alignItems="center" sx={styles.cardGridItem}>
-              <Typography gutterBottom variant="h6" component="span" sx={{ fontSize: '0.7rem', fontWeight: 'bold', textWrap: 'balance', textAlign: 'left' }} onClick={() => redirectProductDetail( product.category.name, product.id)}>
+            <Grid item xs={7} sx={styles.cardGridItem}>
+              <Typography gutterBottom variant="h6" component="span" sx={styles.title} onClick={() => redirectProductDetail( product.category.name, product.id)}>
                 {product.title}
               </Typography>
-              <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+              {/* <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
                 STARS
-              </Typography>
+              </Typography> */}
+              <Rating name="read-only" value={product.stars} readOnly />
             </Grid>
             <Grid item xs={5} justifySelf="end" sx={styles.cardGridItem}>
               <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
@@ -103,16 +101,9 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
           </Grid>
         </CardContent>
       </Card>
-    </ThemeProvider>
+    </>
   );
 }
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#004AC1' },
-    secondary: { main: '#FFD300'},
-  },
-});
 
 const styles = {
   card: {
@@ -143,13 +134,33 @@ const styles = {
     alignItems: 'center',
     transition: 'all 0.3s'
   },
+  cardImage: {
+    objectFit: 'contain',
+    padding: 2,
+    transition: 'all 0.3s',
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
   cardContent: {
+    position: 'absolute',
+    bottom: 0,
     boxShadow: '0px -6px 10px #0000000D'
   },
   cardGridItem: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: '0.7rem',
+    fontWeight: 'bold',
+    textWrap: 'balance',
+    textAlign: 'left',
+    '&:hover': {
+      cursor: 'pointer',
+      textDecoration: 'underline'
+    }
   }
 }
 

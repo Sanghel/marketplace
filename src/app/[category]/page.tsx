@@ -1,24 +1,37 @@
 'use client'
 
-import { useState, useEffect } from "react";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { useState, useEffect } from "react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Button, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import ProductCard from "../components/ProductCard";
 import { useMacropayContext } from "../context";
+import { getAllProducts } from "../utils/httpRequest";
+import { useParams } from 'next/navigation';
+import BannerSalider from '../components/BannerSlider';
 
-export default function Home() {
-  const { products, setProducts, filterCheckProducts, filterProductsByRangePrice, } = useMacropayContext()
-
+export default function CategoryPage() {
+  const params = useParams()
+  const { products, setProducts, filterCheckProducts, filterProductsByRangePrice, minPrice, maxPrice } = useMacropayContext()
+  
   useEffect(() => {
-    fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=50')
-      .then(res => res.json())
-      .then(data => setProducts(data))
-  }, [products, setProducts]);
+    const fetchProductsFunction = async () => {
+      const fetchProducts: Product[] = await getAllProducts()
+      fetchProducts.forEach(product => {
+        product.stars = Math.ceil(Math.random() * 5)
+        if (product.category.name === 'Shoes') product.brand = brands.shoes[product.stars - 1]
+        if (product.category.name === 'Electronics') product.brand = brands.electronics[product.stars - 1]
+        if (product.category.name === 'Furniture') product.brand = brands.furniture[product.stars - 1]
+      })
+      const producstByCategory = fetchProducts.filter(product => product.category.name.toLocaleLowerCase() === params.category)
+      setProducts(producstByCategory)
+    }
+    fetchProductsFunction()
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -28,16 +41,6 @@ export default function Home() {
         </Grid>
         <Grid item sm={12} md={9} sx={styles.gridContainerCards}>
           <Grid container spacing={2}>
-            {/* {minPrice && filterProductsByMinPrice?.map((product) => (
-              <Grid item xs={12} sm={6} md={4} key={product.id}>
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-            {maxPrice && filterProductsByMaxPrice?.map((product) => (
-              <Grid item xs={12} sm={6} md={4} key={product.id}>
-                <ProductCard product={product} />
-              </Grid>
-            ))} */}
             {(filterCheckProducts.length > 0) && filterCheckProducts?.map((product) => (
               <Grid item xs={12} sm={6} lg={4} key={product.id}>
                 <ProductCard product={product} />
@@ -56,6 +59,7 @@ export default function Home() {
           </Grid>
         </Grid>
       </Grid>
+      <BannerSalider />
     </ThemeProvider>
   );
 }
@@ -76,7 +80,7 @@ const styles = {
   gridContainer: {
     position: 'sticky',
     display: 'flex',
-    height: '600px',
+    maxHeight: '600px',
     justifyCcontent: 'center',
     '@media (max-width: 900px)': {
       display: 'none'
@@ -84,8 +88,13 @@ const styles = {
   },
   gridContainerCards: {
     display: 'flex',
-    height: '1500px',
+    maxHeight: '1200px',
     justifyCcontent: 'center',
     overflowY: 'scroll'
   }
+}
+export const brands = {
+  shoes: ['Zara', 'Bershka', 'New Balance', 'Nike', 'Adidas'],
+  electronics: ['Xiaomi', 'Samsung', 'Huaweii', 'Dell', 'Apple'],
+  furniture: ['AOJEZOR', 'VTRIN', 'Maupvit', 'Z&L House', 'Mavivegue']
 }

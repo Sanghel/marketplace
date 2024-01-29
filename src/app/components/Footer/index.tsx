@@ -10,15 +10,16 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import logo from '../../public/assets/logoSVG.svg'
+import sonrisa from '../../public/assets/sonrisa.svg'
 
 export default function Footer() {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Container maxWidth="xl" sx={styles.footerContainer}>
         <Grid container spacing={2} padding={4} alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
-          <Grid item md={6}>
-            <Typography variant="body2" color="secondary" sx={{ fontWeight: 'bold' }}>OFERTAS Y PROMOCIONES</Typography>
-            <Typography variant="h4" color="primary" sx={{ fontWeight: 'bold' }}>
+          <Grid item xs={6} md={6}>
+            <Typography variant="body2" color="primary" sx={{ fontWeight: 'bold' }}>OFERTAS Y PROMOCIONES</Typography>
+            <Typography variant="h4" color="#2B3445" sx={{ fontWeight: 'bold' }}>
               No te pierdas <br />
               nuestras ofertas!
             </Typography>
@@ -31,7 +32,7 @@ export default function Footer() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton>
-                      <SendIcon color="secondary" />
+                      <SendIcon color="primary" />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -44,22 +45,29 @@ export default function Footer() {
                 </Container>
               </Grid>
               <Grid item md={4} sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <Typography variant="body2" color="primary" sx={{ fontSize: '0.75rem' }}>Envios y devoluciones</Typography>
-                <Typography variant="body2" color="primary" sx={{ fontSize: '0.75rem' }}>Preguntas Frecuentes</Typography>
+                <Typography variant="body2" color="#2B3445" sx={{ fontSize: '0.7rem' }}>Envios y devoluciones</Typography>
+                <Typography variant="body2" color="#2B3445" sx={{ fontSize: '0.7rem' }}>Preguntas Frecuentes</Typography>
               </Grid>
               <Grid item md={4} sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <Typography variant="body2" color="primary" sx={{ fontSize: '0.75rem' }}>Aviso de privacidad</Typography>
-                <Typography variant="body2" color="primary" sx={{ fontSize: '0.75rem' }}>Terminos y Condiciones</Typography>
+                <Typography variant="body2" color="#2B3445" sx={{ fontSize: '0.7rem' }}>Aviso de privacidad</Typography>
+                <Typography variant="body2" color="#2B3445" sx={{ fontSize: '0.7rem' }}>Terminos y Condiciones</Typography>
               </Grid>
             </Grid>
 
           </Grid>
-          <Grid item md={3}>carita</Grid>
-          <Grid item md={3} sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <Typography variant="h4" color="primary" sx={{ fontWeight: 'bold' }}>
+          <Grid item xs={0} md={3} sx={styles.containerCarita}>
+            <Image
+              src={sonrisa}
+              alt='logotipo Macropay'
+              height={150}
+              width={150}
+            />
+          </Grid>
+          <Grid item xs={6} md={3} sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <Typography variant="h4" color="#2B3445" sx={{ fontWeight: 'bold' }}>
               Conversemos!
             </Typography>
-            <Typography variant="body2" color="primary" sx={{}}>
+            <Typography variant="body2" color="#2B3445" sx={{}}>
               Siguenos en nuestras redes sociales.
             </Typography>
             <Stack
@@ -77,31 +85,17 @@ export default function Footer() {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   )
 }
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#2B3445' },
-    secondary: { main: '#013E9B'},
-  },
-});
 
 const styles = {
   footerContainer: {
     marginTop: '10rem',
     width: '100%',
-    height: '30rem',
+    height: '25rem',
     position: 'relative',
     backgroundColor: '#FFD300',
-    // svg: {
-    //   height: '10rem',
-    //   position: 'absolute',
-    //   left: 0,
-    //   bottom: 0,
-    //   objectFit: 'contain'
-    // }
   },
   logoContainer: {
     margin: 0,
@@ -123,5 +117,10 @@ const styles = {
       height: '40px',
       color: '#2B3445'
     }
-  }
+  },
+  containerCarita: {
+    '@media (max-width: 900px)': {
+      display: 'none'
+    }
+  },
 }

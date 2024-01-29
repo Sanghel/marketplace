@@ -7,4 +7,6 @@ type Product = {
   updatedAt: string,
   category: Category,
   images: [string]
+  brand?: string,
+  stars?: number
 }

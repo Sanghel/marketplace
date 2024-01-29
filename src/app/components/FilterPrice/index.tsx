@@ -8,26 +8,26 @@ export default function FilterPrice () {
 
   const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMinPrice(event.target.value);
-    let productsByRange
-    if (!maxPrice) {
-      setMaxPrice('99999999')
-      productsByRange = products.filter(product => product.price >= Number(event.target.value))
-    } else {
-      productsByRange = products.filter(product => (product.price >= Number(event.target.value) && product.price <= Number(maxPrice)))
-    }
-    setFilterProductsByRangePrice([...productsByRange]);
+    // let productsByRange
+    // if (!maxPrice) {
+    //   setMaxPrice('99999999')
+    //   productsByRange = products.filter(product => product.price >= Number(event.target.value))
+    // } else {
+    //   productsByRange = products.filter(product => (product.price >= Number(event.target.value) && product.price <= Number(maxPrice)))
+    // }
+    // setFilterProductsByRangePrice([...productsByRange]);
   };
 
   const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMaxPrice(event.target.value);
-    let productsByRange
-    if (!minPrice) {
-      setMinPrice('0')
-      productsByRange = products.filter(product => product.price <= Number(event.target.value))
-    } else {
-      productsByRange = products.filter(product => (product.price <= Number(event.target.value) && product.price >= Number(minPrice)))
-    }
-    setFilterProductsByRangePrice([...productsByRange]);
+    // let productsByRange
+    // if (!minPrice) {
+    //   setMinPrice('0')
+    //   productsByRange = products.filter(product => product.price <= Number(event.target.value))
+    // } else {
+    //   productsByRange = products.filter(product => (product.price <= Number(event.target.value) && product.price >= Number(minPrice)))
+    // }
+    // setFilterProductsByRangePrice([...productsByRange]);
   };
 
   return (
