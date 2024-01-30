@@ -14,18 +14,26 @@ export default function RootLayout({
 
 
   const [products, setProducts] = useState<Array<Product>>([])
-  const [categoryChecked, setCategoryChecked] = useState<{}>({
-    Clothes: false,
-    Electronics: false,
-    Furniture: false,
-    Shoes: false,
-    Miscellaneous: false,
+  const [ratingChecked, setRatingChecked] = useState<{}>({
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false
   })
-  const [filterCheckProducts, setFilterCheckProducts] = useState<Array<Product>>([])
+  const [brandChecked, setBrandChecked] = useState<{}>({
+    brand1: false,
+    brand2: false,
+    brand3: false,
+    brand4: false,
+    brand5: false
+  })
+  // const [isRatingChecked, setIsRatingChecked] = useState<boolean>(false)
+  const [filteredProducts, setFilteredProducts] = useState<Array<Product>>([])
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
-  const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
-  const [rating, setRating] = useState<number | undefined | null>()
+  // const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
+  const [rating, setRating] = useState<number | null | undefined>(0)
 
   return (
     <html lang="en">
@@ -36,18 +44,21 @@ export default function RootLayout({
           value={{
             products,
             setProducts,
-            categoryChecked,
-            setCategoryChecked,
-            filterCheckProducts,
-            setFilterCheckProducts,
+            brandChecked,
+            setBrandChecked,
+            filteredProducts,
+            setFilteredProducts,
             minPrice,
             setMinPrice,
             maxPrice,
             setMaxPrice,
-            filterProductsByRangePrice,
-            setFilterProductsByRangePrice,
+            // filterProductsByRangePrice,
+            // setFilterProductsByRangePrice,
             rating,
-            setRating
+            setRating,
+            ratingChecked,
+            setRatingChecked,
+
           }}
         >
 
@@ -76,6 +87,13 @@ const theme = createTheme({
           background: '#FFD300'
         },
       },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          maxWidth: '5000px!important'
+        }
+      }
     }
   }
 });

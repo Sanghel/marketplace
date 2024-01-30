@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <>
       <Container maxWidth="xl" sx={styles.footerContainer}>
-        <Grid container spacing={2} padding={4} alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
+        <Grid container spacing={2} padding={4} alignItems="center" justifyContent="center" sx={{ height: '100%', maxWidth: '1500px', margin: '0 auto' }}>
           <Grid item xs={6} md={6}>
             <Typography variant="body2" color="primary" sx={{ fontWeight: 'bold' }}>OFERTAS Y PROMOCIONES</Typography>
             <Typography variant="h4" color="#2B3445" sx={{ fontWeight: 'bold' }}>

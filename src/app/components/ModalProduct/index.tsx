@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Box, Typography, Modal, Card, CardMedia, Divider, Grid, createTheme, ThemeProvider, CardContent, Stack, Button } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import banner2 from '../../public/assets/banner2.png'
 import { newPrice } from '@/app/utils/pricesAndDiscounts';
+import { ColorButton } from '../ColorButton';
 
 interface ModalProduct {
   product: Product
@@ -14,9 +16,15 @@ interface ModalProduct {
 }
 
 const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModalOpen, pricePerWeek }) => {
+  const router = useRouter()
   const handleClose = () => setIsModalOpen(false)
   const firstPointPosition = product.description.indexOf('.');
   const newDescription = firstPointPosition !== -1 ? product.description.substring(0, firstPointPosition + 1) : product.description;
+
+  const redirectProductDetail = (categoryName: string, id: number) => {
+    const newCategoryName = categoryName.toLowerCase()
+    router.push(`/${newCategoryName}/${id}`)
+  }
 
   return (
     <>
@@ -87,7 +95,7 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
             <Typography component="div" variant="h4" sx={{ fontWeight: 'bold' }}>
               ${pricePerWeek(product.price)} p/semana!
             </Typography>
-            <Button variant="contained" color="secondary" sx={{ marginBlock: '1rem', width: '280px', height: '55px' }}>Compra a Crédito</Button>
+            <ColorButton variant="contained" sx={{ marginBlock: '1rem', width: '280px', height: '55px' }} onClick={() => redirectProductDetail(product.category.name, product.id)}>Compra a Crédito</ColorButton>
             <Stack
               direction="row"
               justifyContent="space-between"
@@ -110,13 +118,6 @@ const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModal
     </>
   );
 }
-
-// const theme = createTheme({
-//   palette: {
-//     primary: { main: '#004AC1' },
-//     secondary: { main: '#FFD300'},
-//   },
-// });
 
 const style = {
   boxContainer: {

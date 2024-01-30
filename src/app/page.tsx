@@ -21,6 +21,25 @@ const theme = createTheme({
     secondary: { main: '#FFD300'},
     info: { main: '#7D879C'}
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // backgroundColor: '#FFD300'
+        },
+        contained: {
+          background: '#FFD300'
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          maxWidth: '5000px!important'
+        }
+      }
+    }
+  }
 });
 
 const styles = {

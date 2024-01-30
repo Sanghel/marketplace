@@ -6,21 +6,60 @@ import { useMacropayContext } from '@/app/context';
 import { useParams } from 'next/navigation';
 import { brands } from '@/app/[category]/page';
 
-
 export default function Sidebar () {
   const [brandsList, setBrandsList] = useState<string[]>()
-  const { products, categoryChecked, setCategoryChecked, filterCheckProducts, setFilterCheckProducts, rating, setRating } = useMacropayContext()
+  const { products, filteredProducts, setFilteredProducts, rating, setRating, brandChecked, setBrandChecked, ratingChecked, setRatingChecked } = useMacropayContext()
   const params = useParams()
+  const idsUnicos = new Set();
+  // const idsUnicos = new Set();
 
   const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryChecked({ ...categoryChecked, [event.target.value]: event.target.checked });
-    if (event.target.checked) {
-      const productsFilter = products.filter(product => product.brand === event.target.value);
-      setFilterCheckProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter]);
+    setBrandChecked({ ...brandChecked, [event.target.value]: event.target.checked })
+    if (event.target.checked && filteredProducts.length === 0) {
+      const productsFilter = products.filter(product => product.brand === event.target.value)
+      setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
+    } else if (event.target.checked && filteredProducts.length !== 0) {
+      const productsFilter = filteredProducts.filter(product => {
+        if (product.brand === event.target.value && idsUnicos.has(product.id)) {
+          idsUnicos.add(product.id);
+          return true;
+        } else {
+          return false
+        }
+      })
+      setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
     } else {
-      const productsFilter = filterCheckProducts.filter(product => product.brand !== event.target.value);
-      setFilterCheckProducts([...productsFilter]);
+      const productsFilter = filteredProducts.filter(product => product.brand !== event.target.value)
+      setFilteredProducts([...productsFilter])
     }
+  }
+  const handleRating = (event: React.SyntheticEvent<Element, Event>, newValue: number | null | undefined) => {
+    const newRatingValue = newValue === rating ? 0 : newValue;
+
+    if (!newRatingValue && filteredProducts.length === 0) {
+      setFilteredProducts([]);
+    } else if (newRatingValue && filteredProducts.length !== 0) {
+      const productsFilter = filteredProducts.filter(product => {
+        if ((product.stars === newRatingValue) && idsUnicos.has(product.id)) {
+          idsUnicos.add(product.id);
+          return true;
+        } else {
+          return false
+        }
+      })
+      setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
+    } else {
+      return
+      const productsFilter = filteredProducts.filter(product => product.stars !== newRatingValue)
+      setFilteredProducts([...productsFilter])
+    }
+    
+    setRating(newRatingValue)
+    console.log(newRatingValue)
+    console.log(rating)
+
+
+
   }
 
   useEffect(() => {
@@ -33,7 +72,7 @@ export default function Sidebar () {
     <>
       <Box padding={0} sx={styles.box}>
         <Typography variant="body1" color="primary" sx={styles.text}>Marcas</Typography>
-          {brandsList?.map(brand => (
+          {brandsList?.map((brand, idx) => (
             <div key={brand} style={styles.checkboxContainer}>
               <input type='checkbox' name='brands' value={brand} id={brand} onChange={handleCheckbox}/>
               <label htmlFor={brand}>{brand}</label>
@@ -47,9 +86,7 @@ export default function Sidebar () {
         <Rating
           name="simple-controlled"
           value={rating}
-          onChange={(event, newValue) => {
-            setRating(newValue);
-          }}
+          onChange={(event, newValue) => handleRating(event, newValue)}
           sx={{ margin: '1rem 0 0 1rem' }}
         />
       </Box>
@@ -60,6 +97,7 @@ export default function Sidebar () {
 const styles = {
   box: {
     width: '100%',
+    // maxWidth: '300px',
     height: '480px',
     bgcolor: 'background.paper',
     boxShadow: '0px 3px 6px #00000029',

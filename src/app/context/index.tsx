@@ -4,20 +4,22 @@ import { Dispatch, SetStateAction, createContext, useContext, useState } from 'r
 import { createSafeContext } from '../utils/createSafeContext'
 
 type MacropayContextType = {
-  categoryChecked: {}
-  setCategoryChecked: Dispatch<SetStateAction<{}>>
-  filterCheckProducts: Product[]
-  setFilterCheckProducts: Dispatch<SetStateAction<Product[]>>
+  brandChecked: {}
+  setBrandChecked: Dispatch<SetStateAction<{}>>
+  ratingChecked: {}
+  setRatingChecked: Dispatch<SetStateAction<{}>>
+  filteredProducts: Product[]
+  setFilteredProducts: Dispatch<SetStateAction<Product[]>>
   products: Product[]
   setProducts: Dispatch<SetStateAction<Product[]>>
   minPrice: string
   setMinPrice: Dispatch<SetStateAction<string>>
   maxPrice: string
   setMaxPrice: Dispatch<SetStateAction<string>>
-  filterProductsByRangePrice: Product[]
-  setFilterProductsByRangePrice: Dispatch<SetStateAction<Product[]>>
-  rating: number | undefined | null
-  setRating: Dispatch<SetStateAction<number | undefined | null>>
+  // filterProductsByRangePrice: Product[]
+  // setFilterProductsByRangePrice: Dispatch<SetStateAction<Product[]>>
+  rating: number | null | undefined
+  setRating: Dispatch<SetStateAction<number | null | undefined>>
 }
 
 

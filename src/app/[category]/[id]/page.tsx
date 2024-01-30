@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
-import { Box, Button, Container, Divider, Grid, Rating, Stack, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, ImageList, ImageListItem, Rating, Stack, ThemeProvider, Typography, createTheme } from '@mui/material';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import AddCardIcon from '@mui/icons-material/AddCard';
@@ -11,9 +11,14 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useMacropayContext } from '@/app/context';
 import { newPrice, discount, pricePerWeek } from '@/app/utils/pricesAndDiscounts';
+import TabPanel from '@/app/components/TabPanel';
+import ProductCard from '@/app/components/ProductCard';
+import Image from 'next/image';
+import { ColorButton } from '@/app/components/ColorButton';
 
 export default function ProductDetail() {
   const [productDetail, setProductDetail] = useState<Product>()
+  const [similarProducts, setSimilarProducst] = useState<Product[]>()
   const router = useRouter()
   const params = useParams()
   const { products } = useMacropayContext()
@@ -29,6 +34,8 @@ export default function ProductDetail() {
   useEffect(() => {
     const product = products.filter(product => product.id === Number(params.id))
     setProductDetail(product[0])
+    const otherProducts = products.filter(product => product.category.name === product.category.name)
+    setSimilarProducst(otherProducts)
   }, [])
 
   return (
@@ -54,42 +61,38 @@ export default function ProductDetail() {
             {firstLetterToUppercase(productDetail?.category.name)} / <strong>{firstLetterToUppercase(productDetail?.title)}</strong>
           </Typography>
         </Stack>
-        <Grid container spacing={1} paddingInline={3.5}>
-          <Grid item sm={1.4}>
-            <Grid
-              container
-              columns={1}
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ maxHeight: '300px', overflowY: 'scroll' }}
-            >
-              {productDetail?.images.map((image, idx) => (
-                <Container
-                  component="img"
-                  key={idx}
-                  alt={image}
-                  src={image}
-                  sx={{ width: '100px', height: '100px', padding: '0px!important' }}
-                />
-              ))}
-            </Grid>
-          </Grid>
-          <Grid item sm={3.6} sx={{ position: 'relative' }}>
+        <Container sx={{ display: 'flex', gap: '0.5rem', margin: '0!important', position: 'relative' }}>
+          {/* <Grid item sm={1.4}> */}
+            <Box sx={styles.imagesBox}>
+              <ImageList variant="masonry" cols={1} gap={5}>
+                {!!productDetail?.images && productDetail?.images.map((image, idx) => (
+                  <ImageListItem key={idx}>
+                    <Container
+                      component="img"
+                      key={idx}
+                      alt={image}
+                      src={image}
+                      sx={{ width: '100px', height: '100px', padding: '0px!important' }}
+                    />
+                  </ImageListItem>
+                ))}
+              </ImageList>
+            </Box>
+          {/* </Grid> */}
+          {/* <Grid item sm={3.6} sx={{ position: 'relative' }}> */}
             <Container
               component="img"
               alt={productDetail?.images[0]}
               src={productDetail?.images[0]}
-              sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
+              sx={styles.mainImage}
             />
             {(!!productDetail?.price && productDetail?.price > 30) && (
               <Container sx={styles.discount}>
                 <Typography variant="h3" color="white" component="div" sx={{ margin: 0, fontWeight: 'normal', fontSize: '30px' }}>{discount(productDetail.price)}%</Typography>
               </Container>
             )}
-          </Grid>
-          <Grid item sm={7}>
+          {/* </Grid> */}
+          <Container>
             <Container component="div" sx={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem!important' }}>
                 <Container component="div" sx={{ padding: '0px!important', width: '60%' }}>
                   <Typography color="black" variant="h5">
@@ -133,7 +136,7 @@ export default function ProductDetail() {
                 </Typography>
               </div>
             </Container>
-            <Container sx={{ width: '70%', height: '120px', position: 'relative', margin: '1rem 0 0 auto', padding: '0px!important' }}>
+            <Container maxWidth="md" sx={{ width: '370px', height: '120px', position: 'relative', margin: '1rem 0 0 auto', padding: '0px!important' }}>
               <Box sx={styles.boxSteps}>
                 <div>
                   <div style={styles.numberStep}>1</div>
@@ -160,19 +163,19 @@ export default function ProductDetail() {
                   </Typography>
                 </div>
               </Box>
-              <Button variant="contained" color="secondary" sx={styles.button}>
+              <ColorButton variant="contained" sx={styles.button}>
                 Lo quiero a Crêdito
                 <ArrowCircleRightIcon fontSize='medium' color='primary' />
-              </Button>
+              </ColorButton>
             </Container>
-          </Grid>
-        </Grid>
-        <Typography fontSize={16} color="black" variant="h6" textAlign="left" paddingInline={3.5} marginTop={2}>
+          </Container>
+        </Container>
+        <Typography fontSize={20} color="black" variant="h6" textAlign="left" paddingInline={3.5} marginTop={4}>
           Información Detallada del Producto
         </Typography>
         <Grid container maxWidth="xl" paddingInline={3.5} marginBlock={2}>
-          <Grid item sm={6}>
-            <Grid container spacing={1}>
+          <Grid item alignItems="center" md={6} xs={12}>
+            {/* <Grid container spacing={1}>
               {productDetail?.images.map((image, idx) => (
                 <Grid item sm={6} key={idx}>
                   <Container
@@ -202,12 +205,62 @@ export default function ProductDetail() {
                   sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
                 />
               </Grid>
-            </Grid>
+            </Grid> */}
+            <Box sx={{ width: '100%', maxWidth: '570px', height: '100%', overflow: 'hidden', margin: '0 auto' }}>
+              <ImageList variant="masonry" cols={2} gap={5}>
+                {!!productDetail?.images && productDetail?.images.map((image, idx) => (
+                  <ImageListItem key={idx} sx={{  }}>
+                    <Container
+                      component="img"
+                      key={idx}
+                      alt={image}
+                      src={image}
+                      sx={{ width: '280px', height: '280px', padding: '0px!important', objectFit: 'cover' }}
+                    />
+                  </ImageListItem>
+                ))}
+                {(!!productDetail?.images && productDetail?.images.length < 3) && productDetail?.images.map((image, idx) => (
+                  <ImageListItem key={idx} sx={{  }}>
+                    <Container
+                      component="img"
+                      key={idx}
+                      alt={image}
+                      src={image}
+                      sx={{ width: '280px', height: '280px', padding: '0px!important', objectFit: 'cover' }}
+                    />
+                  </ImageListItem>
+                ))}
+                <ImageListItem sx={{ }}>
+                  <Container
+                    component="img"
+                    alt={productDetail?.images[0]}
+                    src={productDetail?.images[0]}
+                    sx={{ width: '280px', height: '280px', padding: '0px!important', objectFit: 'cover' }}
+                  />
+                </ImageListItem>
+              </ImageList>
+            </Box>
           </Grid>
-          <Grid item sm={6}>
-
+          <Grid item md={6} xs={12}>
+            <TabPanel rating={productDetail?.stars} />
           </Grid>
         </Grid>
+        <Typography fontSize={20} color="black" variant="h6" textAlign="center" paddingInline={3.5} marginTop={4}>
+          Productos Relacionados
+        </Typography>
+        <Container maxWidth="xl" sx={styles.otherProductsContainer}>
+          {similarProducts?.map((product, idx) => (
+            <Container key={idx} sx={{
+              paddingBottom: '1rem',
+              height: '100%',
+              width: '300px',
+              paddingInline: '0rem!important'
+
+            }}>
+              <ProductCard product={product} />
+            </Container>
+          ))}
+        </Container>
       </Container>
     </>
   )
@@ -228,23 +281,38 @@ const styles = {
       color: '#2B3445'
     }
   },
+  imagesBox: {
+    width: 185,
+    height: 300,
+    overflowY: 'scroll',
+    '@media (max-width: 950px)': {
+      display: 'none'
+    }
+  },
   discount: {
     height: 70,
     width: 70,
     borderRadius: '50%',
     backgroundColor: '#E6406D',
     position: 'absolute',
-    left: 19,
-    bottom: 43,
+    left: 140,
+    bottom: 35,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    transition: 'all 0.3s'
+    '@media (max-width: 950px)' :{
+      left: 40,
+      bottom: 50
+    },
+    '@media (max-width: 780px)' :{
+      display: 'none'
+    },
   },
   infoContainer: {
     backgroundColor: '#d3d8e0',
     margin: '5px 0 5px auto',
-    width: '50%',
+    width: '60%',
+    maxWidth: '215px',
     height: '50px',
     display: 'flex',
     alignItems: 'center',
@@ -256,13 +324,13 @@ const styles = {
     }
   },
   boxSteps: {
-    width: '100%',
+    maxWidth: '370px',
     padding: '0.5rem 1rem',
     height: '80px',
     backgroundColor: '#FFF',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     gap: '1rem',
     boxShadow: '0px 3px 6px #00000029',
     borderRadius: '9px'
@@ -279,7 +347,9 @@ const styles = {
     fontSize: '0.5rem'
   },
   button: {
-    width: '50%',
+    minWidth: '170px',
+    maxWidth: '200px',
+    // width: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -288,5 +358,24 @@ const styles = {
     position: 'absolute',
     right: '20px',
     bottom: '12px'
+  },
+  otherProductsContainer: {
+    marginTop: '2rem',
+    width: 'auto',
+    minheight: '440px',
+    display: 'flex',
+    gap: '1rem',
+    overflowX: 'scroll',
+    overflowY: 'hidden'
+  },
+  mainImage: {
+    width: '300px',
+    height: '300px',
+    padding:
+    '0px!important',
+    objectFit: 'cover',
+    '@media (max-width: 780px)': {
+      display: 'none'
+    }
   }
 }

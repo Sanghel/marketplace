@@ -14,6 +14,7 @@ import { useState } from 'react';
 import ModalProduct from '../ModalProduct';
 import { useRouter } from 'next/navigation';
 import { discount, pricePerMonth, pricePerWeek, newPrice } from '@/app/utils/pricesAndDiscounts';
+import { ColorButton } from '../ColorButton';
 
 interface ProductCard {
   product: Product;
@@ -23,7 +24,12 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [imageError, setImageError] = useState(false);
   const router = useRouter()
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   const redirectProductDetail = (categoryName: string, id: number) => {
     const newCategoryName = categoryName.toLowerCase()
@@ -44,12 +50,13 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
       >
         <CardMedia
           component="img"
-          alt={product.title}
-          height="300"
-          image={!!product.images[0] ? product.images[0] : 'https://pbs.twimg.com/profile_images/1708898362588577792/VfxT-nvi_400x400.jpg'}
+          alt={!imageError ? product.title : 'La image no se ha cargado correctamente'}
+          height="60%"
+          image={!imageError ? product.images[0] : 'https://pbs.twimg.com/profile_images/1708898362588577792/VfxT-nvi_400x400.jpg'}
           // image={isHovered && product.images.length > 1 ? product.images[1] : product.images[0]}
           sx={styles.cardImage}
           onClick={() => redirectProductDetail(product.category.name, product.id)}
+          onError={handleImageError}
         />
         <IconButton sx={styles.favoriteIcon} onClick={setFavorite}>
           {isFavorite && <FavoriteIcon color="secondary" />}
@@ -66,9 +73,6 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
               <Typography gutterBottom variant="h6" component="span" sx={styles.title} onClick={() => redirectProductDetail( product.category.name, product.id)}>
                 {product.title}
               </Typography>
-              {/* <Typography gutterBottom variant="h6" component="div" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                STARS
-              </Typography> */}
               <Rating name="read-only" value={product.stars} readOnly />
             </Grid>
             <Grid item xs={5} justifySelf="end" sx={styles.cardGridItem}>
@@ -88,15 +92,15 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Button
+              <ColorButton
                 variant="contained"
-                color="secondary"
+                // color="secondary"
                 size="small"
                 sx={{ float: 'right', fontWeight: 'bold', textTransform: 'none', fontSize: '0.75rem' }}
                 onClick={() => setIsModalOpen(true)}
               >
                 Lo Quiero!
-              </Button>
+              </ColorButton>
             </Grid>
           </Grid>
         </CardContent>
@@ -108,8 +112,9 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 const styles = {
   card: {
     position: 'relative',
-    width: 300,
-    minHeight: 460,
+    minWidth: '300px',
+    with: '100%',
+    minHeight: '100%',
     transition: 'boxShadow 0.3s',
     borderRadius: 3,
     '&:hover': {
@@ -128,7 +133,7 @@ const styles = {
     backgroundColor: '#E6406D',
     position: 'absolute',
     left: 25,
-    bottom: 190,
+    bottom: 170,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,8 +148,6 @@ const styles = {
     }
   },
   cardContent: {
-    position: 'absolute',
-    bottom: 0,
     boxShadow: '0px -6px 10px #0000000D'
   },
   cardGridItem: {

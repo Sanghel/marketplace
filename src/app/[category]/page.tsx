@@ -16,11 +16,14 @@ import BannerSalider from '../components/BannerSlider';
 
 export default function CategoryPage() {
   const params = useParams()
-  const { products, setProducts, filterCheckProducts, filterProductsByRangePrice, minPrice, maxPrice } = useMacropayContext()
-  
+  const { products, setProducts, filteredProducts, minPrice, maxPrice, brandChecked, ratingChecked } = useMacropayContext()
+  const isAnyBrandChecked = Object.values(brandChecked).includes(true)
+  const isAnyRatingChecked = Object.values(ratingChecked).includes(true)
+
   useEffect(() => {
     const fetchProductsFunction = async () => {
       const fetchProducts: Product[] = await getAllProducts()
+      console.log(fetchProducts)
       fetchProducts.forEach(product => {
         product.stars = Math.ceil(Math.random() * 5)
         if (product.category.name === 'Shoes') product.brand = brands.shoes[product.stars - 1]
@@ -29,33 +32,37 @@ export default function CategoryPage() {
       })
       const producstByCategory = fetchProducts.filter(product => product.category.name.toLocaleLowerCase() === params.category)
       setProducts(producstByCategory)
+      console.log(producstByCategory)
     }
     fetchProductsFunction()
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container maxWidth="xl" spacing={2} padding={2} paddingInline={6} justifyContent="center" sx={{ position: 'relative' }}>
-        <Grid item md={3} sx={styles.gridContainer}>
+      <Grid container padding={3} justifyContent="center" sx={{ position: 'relative', maxWidth: '1500px', margin: '0 auto' }}>
+        <Grid item md={3} lg={2} sx={styles.gridContainer}>
           <Sidebar />
         </Grid>
-        <Grid item sm={12} md={9} sx={styles.gridContainerCards}>
-          <Grid container spacing={2}>
-            {(filterCheckProducts.length > 0) && filterCheckProducts?.map((product) => (
+        <Grid item sm={12} md={9} lg={10} sx={styles.gridContainerCards}>
+          <Grid container gap={2} sx={{ width: '100%' }} columns={{xs: 6,  sm: 13, md: 13, lg: 13 }}>
+            {(filteredProducts.length === 0 && !isAnyBrandChecked && !isAnyRatingChecked) && products?.map((product) => (
               <Grid item xs={12} sm={6} lg={4} key={product.id}>
                 <ProductCard product={product} />
               </Grid>
             ))}
-            {(filterProductsByRangePrice.length > 0) && filterProductsByRangePrice?.map((product) => (
-              <Grid item xs={12} sm={6} lg={4} key={product.id}>
+            {(filteredProducts.length > 0) && filteredProducts?.map((product) => (
+              <Grid item xs={12} sm={6} lg={4} key={product.id} sx={styles.singleCardContainer}>
                 <ProductCard product={product} />
               </Grid>
             ))}
-            {(filterCheckProducts.length === 0) && products?.map((product) => (
+            {/* {(filterProductsByRangePrice.length > 0) && filterProductsByRangePrice?.map((product) => (
               <Grid item xs={12} sm={6} lg={4} key={product.id}>
                 <ProductCard product={product} />
               </Grid>
-            ))}
+            ))} */}
+            {(filteredProducts.length === 0 && !!isAnyBrandChecked || !!isAnyRatingChecked) && (
+              <div>NO SE ENCUENTRAN PRODUCTOS CON ESTAS CARACTERISTICAS</div>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -78,19 +85,25 @@ const styles = {
     gap: '2rem',
   },
   gridContainer: {
+    maxWidth: '300px',
     position: 'sticky',
     display: 'flex',
     maxHeight: '600px',
     justifyCcontent: 'center',
     '@media (max-width: 900px)': {
       display: 'none'
-    }
+    },
+    padding: '0!important'
   },
   gridContainerCards: {
-    display: 'flex',
+    // display: 'flex',
     maxHeight: '1200px',
     justifyCcontent: 'center',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    paddingLeft: 3
+  },
+  singleCardContainer: {
+    minHeight: '460px'
   }
 }
 export const brands = {
