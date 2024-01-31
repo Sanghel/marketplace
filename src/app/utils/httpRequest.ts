@@ -1,7 +1,6 @@
 const BASE_URL = 'https://api.escuelajs.co/api/v1'
 
 export async function getAllProducts() {
-  // const response = await fetch(BASE_URL + '/products?offset=0&limit=10')
   const response = await fetch(BASE_URL + '/products')
   const data = await response.json()
   return data

@@ -1,19 +1,22 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import { Box, Button, Container, Divider, Grid, ImageList, ImageListItem, Rating, Stack, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Box, Button, Container, Divider, Grid, ImageList, ImageListItem, Rating, Stack, Typography, Card, CardContent, CardActions } from '@mui/material';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import CheckIcon from '@mui/icons-material/Check';
 import { useMacropayContext } from '@/app/context';
 import { newPrice, discount } from '@/app/utils/pricesAndDiscounts';
 import TabPanel from '@/app/components/TabPanel';
 import ProductCard from '@/app/components/ProductCard';
 import { ColorButton } from '@/app/components/ColorButton';
+import sonrisa from '../../public/assets/sonrisa.svg'
 
 export default function ProductDetail() {
   const [productDetail, setProductDetail] = useState<Product>()
@@ -207,6 +210,47 @@ export default function ProductDetail() {
           </Grid>
           <Grid item md={6} xs={12}>
             <TabPanel rating={productDetail?.stars} />
+            <Grid container>
+              <Grid item xs={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: '2rem' }}>
+                <Typography variant='h5' color="primary" sx={{ fontSize: '1rem', fontStyle: 'italic' }}>
+                  Lleva este producto <br />
+                  a Crédito!
+                </Typography>
+                <Typography variant='subtitle1' color="secondary" sx={{ fontSize: '1rem', fontWeight: 'normal', marginBlock: '1rem' }}>
+                  ¿Qué necesitas?
+                </Typography>
+                {list.map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                    <CheckIcon fontSize='small' sx={{ color: '#A2D456' }} />
+                    <Typography variant='body2' color="black">{item}</Typography>
+                  </div>
+                ))}
+              </Grid>
+              <Grid item xs={6}>
+                <Card sx={{ paddingBlock: '0.5rem', borderRadius: '13px', maxWidth: '300px', height: '300px' }}>
+                  <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', textAlign: 'center' }}>
+                    <Image
+                      src={sonrisa}
+                      alt='logotipo Macropay'
+                      height={50}
+                      width={50}
+                      style={{ margin: '0 auto' }}
+                    />
+                    <Typography variant='h6' color='black' sx={{ fontWeight: 'bold' }}>
+                      ¿Te falta una lanita?
+                    </Typography>
+                    <Typography variant='body2' color='black' sx={{ fontWeight: 'thin' }}>
+                      ENGANCHE $520,00 <br />
+                      PAGO SEMANAL $125,00
+                    </Typography>
+                    <ColorButton>Aplica Ahora</ColorButton>
+                    <Typography variant='body2' color='gray' sx={{ fontWeight: 'thin', opacity: 0.75, fontSize: '0.55rem' }}>
+                      *Hasta $2,000 de manera fácil, rápida y confiable
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <Typography fontSize={20} color="black" variant="h6" textAlign="center" paddingInline={3.5} marginTop={4}>
@@ -342,3 +386,9 @@ const styles = {
     }
   }
 }
+
+const list = [
+  'Tu cuenta de Facebook',
+  'Tu INE Vigente',
+  'Correo Electrónico',
+]
