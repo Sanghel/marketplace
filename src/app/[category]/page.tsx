@@ -62,7 +62,10 @@ export default function CategoryPage() {
                 {(filteredProducts.length === 0 && !!isAnyBrandChecked ) && (
                   <div>NO SE ENCUENTRAN PRODUCTOS DE ESTA MARCA</div>
                 )}
-                {(filteredProducts.length === 0 && !!minPrice || !!maxPrice ) && (
+                {(filteredProducts.length === 0 && !!minPrice) && (
+                  <div>NO SE ENCUENTRAN PRODUCTOS DE ESTE PRECIO</div>
+                )}
+                {(filteredProducts.length === 0 && !!maxPrice) && (
                   <div>NO SE ENCUENTRAN PRODUCTOS DE ESTE PRECIO</div>
                 )}
               </Grid>
