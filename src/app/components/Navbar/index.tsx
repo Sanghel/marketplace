@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { AppBar, Box, Button, Container, Stack } from '@mui/material'
+import React from 'react'
 import { usePathname } from 'next/navigation'
+import { AppBar, Box, Button, Container, Stack } from '@mui/material'
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -74,9 +74,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     backgroundColor: 'white',
-    // paddingLeft: '2.3rem',
     color: '#013E9B',
-    // boxShadow: '0px 5px 6px #00000029',
     boxShadow: 'none!important',
   },
   inactive: {

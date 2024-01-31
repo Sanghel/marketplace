@@ -5,12 +5,12 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { useEffect } from "react";
+import { useParams } from 'next/navigation';
 import { Grid } from "@mui/material";
+import { getAllProducts } from "../utils/httpRequest";
+import { useMacropayContext } from "../context";
 import Sidebar from "../components/Sidebar";
 import ProductCard from "../components/ProductCard";
-import { useMacropayContext } from "../context";
-import { getAllProducts } from "../utils/httpRequest";
-import { useParams } from 'next/navigation';
 import BannerSalider from '../components/BannerSlider';
 
 export default function CategoryPage() {
@@ -83,7 +83,6 @@ const styles = {
     padding: '0!important'
   },
   gridContainerCards: {
-    // display: 'flex',
     maxHeight: '1200px',
     justifyCcontent: 'center',
     overflowY: 'scroll',

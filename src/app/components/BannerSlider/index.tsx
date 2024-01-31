@@ -2,10 +2,10 @@
 
 import Image from 'next/image'
 import React, { useState } from 'react'
-import banner1 from '../../public/assets/banner1.jpeg'
 import { Container, IconButton } from '@mui/material'
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined'
+import banner1 from '../../public/assets/banner1.jpeg'
 
 export default function BannerSalider() {
   const images = [banner1]

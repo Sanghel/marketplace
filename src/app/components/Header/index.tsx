@@ -1,14 +1,12 @@
 'use client'
 
 import React from 'react'
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, Container, IconButton, Stack, Typography } from "@mui/material";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import Navbar from '../Navbar';
 import Image from 'next/image';
-import logo from '../../public/assets/logoSVG.svg'
+import { Button, Container, Stack, Typography } from "@mui/material";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { ColorButton } from '../ColorButton';
+import Navbar from '../Navbar';
+import logo from '../../public/assets/logoSVG.svg'
 
 
 export default function Header() {
@@ -55,7 +53,6 @@ export default function Header() {
 
 const styles = {
   header: {
-    // maxWidth: '2500px!important',
     width: '100%',
     background: 'transparent linear-gradient(180deg, #004AC1 0%, #0744A8 100%) 0% 0% no-repeat padding-box',
     color: '#FFD300',
@@ -63,16 +60,14 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     padding: '0!important',
-    // overflowX: 'hidden',
   },
   floatDiv: {
     width: '250px',
     height: '250px',
-    backgroundColor: '#FFD300',/* Color de fondo del cuarto de círculo */
+    backgroundColor: '#FFD300',
     position: 'absolute',
     top: 0,
     right: 0,
-    // clipPath: 'polygon(100% 0%, 100% 100%, 0% 100%, 0% 0%, 70.7% 0%, 100% 29.3%)',
     clipPath: 'ellipse(130px 130px at 85% 15%)',
     zIndex:1000,
     '@media (max-width: 768px)': {
@@ -84,7 +79,6 @@ const styles = {
       margin: '25px 0 0 50px',
       paddingLeft: '65px',
       width: '200px'
-      // margin: '60px 0 0 10px'
     },
     text2: {
       transform: 'rotate(45deg)',

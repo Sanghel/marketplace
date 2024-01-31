@@ -1,20 +1,14 @@
 'use client'
 
 import * as React from 'react';
-import { createTheme, ThemeProvider, makeStyles } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Container, createStyles, Grid, IconButton, Rating } from '@mui/material';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ColorButton } from '../ColorButton';
+import { Card, CardContent, CardMedia, Typography, Container, Grid, IconButton, Rating }from '@mui/material'
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useState } from 'react';
-import ModalProduct from '../ModalProduct';
-import { useRouter } from 'next/navigation';
 import { discount, pricePerMonth, pricePerWeek, newPrice } from '@/app/utils/pricesAndDiscounts';
-import { ColorButton } from '../ColorButton';
+import ModalProduct from '../ModalProduct';
 
 interface ProductCard {
   product: Product;
@@ -94,7 +88,6 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
             <Grid item xs={6}>
               <ColorButton
                 variant="contained"
-                // color="secondary"
                 size="small"
                 sx={{ float: 'right', fontWeight: 'bold', textTransform: 'none', fontSize: '0.75rem' }}
                 onClick={() => setIsModalOpen(true)}

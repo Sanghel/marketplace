@@ -10,10 +10,9 @@ import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useMacropayContext } from '@/app/context';
-import { newPrice, discount, pricePerWeek } from '@/app/utils/pricesAndDiscounts';
+import { newPrice, discount } from '@/app/utils/pricesAndDiscounts';
 import TabPanel from '@/app/components/TabPanel';
 import ProductCard from '@/app/components/ProductCard';
-import Image from 'next/image';
 import { ColorButton } from '@/app/components/ColorButton';
 
 export default function ProductDetail() {
@@ -62,65 +61,61 @@ export default function ProductDetail() {
           </Typography>
         </Stack>
         <Container sx={{ display: 'flex', gap: '0.5rem', margin: '0!important', position: 'relative' }}>
-          {/* <Grid item sm={1.4}> */}
-            <Box sx={styles.imagesBox}>
-              <ImageList variant="masonry" cols={1} gap={5}>
-                {!!productDetail?.images && productDetail?.images.map((image, idx) => (
-                  <ImageListItem key={idx}>
-                    <Container
-                      component="img"
-                      key={idx}
-                      alt={image}
-                      src={image}
-                      sx={{ width: '100px', height: '100px', padding: '0px!important' }}
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-            </Box>
-          {/* </Grid> */}
-          {/* <Grid item sm={3.6} sx={{ position: 'relative' }}> */}
-            <Container
-              component="img"
-              alt={productDetail?.images[0]}
-              src={productDetail?.images[0]}
-              sx={styles.mainImage}
-            />
-            {(!!productDetail?.price && productDetail?.price > 30) && (
-              <Container sx={styles.discount}>
-                <Typography variant="h3" color="white" component="div" sx={{ margin: 0, fontWeight: 'normal', fontSize: '30px' }}>{discount(productDetail.price)}%</Typography>
-              </Container>
-            )}
-          {/* </Grid> */}
+          <Box sx={styles.imagesBox}>
+            <ImageList variant="masonry" cols={1} gap={5}>
+              {!!productDetail?.images && productDetail?.images.map((image, idx) => (
+                <ImageListItem key={idx}>
+                  <Container
+                    component="img"
+                    key={idx}
+                    alt={image}
+                    src={image}
+                    sx={{ width: '100px', height: '100px', padding: '0px!important' }}
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
+          </Box>
+          <Container
+            component="img"
+            alt={productDetail?.images[0]}
+            src={productDetail?.images[0]}
+            sx={styles.mainImage}
+          />
+          {(!!productDetail?.price && productDetail?.price > 30) && (
+            <Container sx={styles.discount}>
+              <Typography variant="h3" color="white" component="div" sx={{ margin: 0, fontWeight: 'normal', fontSize: '30px' }}>{discount(productDetail.price)}%</Typography>
+            </Container>
+          )}
           <Container>
             <Container component="div" sx={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem!important' }}>
-                <Container component="div" sx={{ padding: '0px!important', width: '60%' }}>
-                  <Typography color="black" variant="h5">
-                    {productDetail?.title}
+              <Container component="div" sx={{ padding: '0px!important', width: '60%' }}>
+                <Typography color="black" variant="h5">
+                  {productDetail?.title}
+                </Typography>
+                <Rating name="read-only" value={productDetail?.stars} readOnly />
+              </Container>
+              <Container component="div" sx={{ padding: '0px!important', width: '40%' }}>
+                <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
+                  ${newPrice(productDetail?.price)}
+                </Typography>
+                { (!!productDetail?.price && productDetail?.price >= 30) && (
+                  <Typography gutterBottom variant="body1" component="div" sx={{ textAlign: 'right', fontSize: '1rem' , textDecoration: 'line-through', color: '#7D879C' }}>
+                    ${productDetail?.price}
                   </Typography>
-                  <Rating name="read-only" value={productDetail?.stars} readOnly />
-                </Container>
-                <Container component="div" sx={{ padding: '0px!important', width: '40%' }}>
-                  <Typography color="primary" gutterBottom variant="h5" component="div" sx={{ textAlign: 'right', fontWeight: 'bold', fontSize: '1.5rem', marginBottom: 0 }}>
-                    ${newPrice(productDetail?.price)}
-                  </Typography>
-                  { (!!productDetail?.price && productDetail?.price >= 30) && (
-                    <Typography gutterBottom variant="body1" component="div" sx={{ textAlign: 'right', fontSize: '1rem' , textDecoration: 'line-through', color: '#7D879C' }}>
-                      ${productDetail?.price}
-                    </Typography>
-                  )}
-                  <Stack
-                    direction="row"
-                    justifyContent="end"
-                    alignItems="center"
-                    sx={styles.iconsContainer}
-                    gap={1}
-                  >
-                    <CreditCardIcon />
-                    <AddCardIcon />
-                    <CreditScoreIcon />
-                  </Stack>
-                </Container>
+                )}
+                <Stack
+                  direction="row"
+                  justifyContent="end"
+                  alignItems="center"
+                  sx={styles.iconsContainer}
+                  gap={1}
+                >
+                  <CreditCardIcon />
+                  <AddCardIcon />
+                  <CreditScoreIcon />
+                </Stack>
+              </Container>
             </Container>
             <Typography variant='body2' color="gray" fontSize={12} sx={{ paddingInline: '0.5rem' }}>
               {newDescription}
@@ -175,37 +170,6 @@ export default function ProductDetail() {
         </Typography>
         <Grid container maxWidth="xl" paddingInline={3.5} marginBlock={2}>
           <Grid item alignItems="center" md={6} xs={12}>
-            {/* <Grid container spacing={1}>
-              {productDetail?.images.map((image, idx) => (
-                <Grid item sm={6} key={idx}>
-                  <Container
-                    component="img"
-                    key={idx}
-                    alt={image}
-                    src={image}
-                    sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
-                  />
-                </Grid>
-                ))}
-              {(!!productDetail?.images.length && productDetail?.images.length < 3) && (
-                <Grid item sm={6}>
-                  <Container
-                    component="img"
-                    alt={productDetail?.images[0]}
-                    src={productDetail?.images[0]}
-                    sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
-                  />
-                </Grid>
-              )}
-              <Grid item sm={6}>
-                <Container
-                  component="img"
-                  alt={productDetail?.images[0]}
-                  src={productDetail?.images[0]}
-                  sx={{ width: '300px', height: '300px', padding: '0px!important', objectFit: 'cover' }}
-                />
-              </Grid>
-            </Grid> */}
             <Box sx={{ width: '100%', maxWidth: '570px', height: '100%', overflow: 'hidden', margin: '0 auto' }}>
               <ImageList variant="masonry" cols={2} gap={5}>
                 {!!productDetail?.images && productDetail?.images.map((image, idx) => (
@@ -255,7 +219,6 @@ export default function ProductDetail() {
               height: '100%',
               width: '300px',
               paddingInline: '0rem!important'
-
             }}>
               <ProductCard product={product} />
             </Container>

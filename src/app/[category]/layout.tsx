@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { MacropayContextProvider } from "../context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { MacropayContextProvider } from "../context";
-import { createTheme, ThemeProvider } from "@mui/material";
 
 export default function RootLayout({
   children,
@@ -12,15 +12,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-
   const [products, setProducts] = useState<Array<Product>>([])
   const [ratingChecked, setRatingChecked] = useState<{} | undefined>()
   const [brandChecked, setBrandChecked] = useState<{}>({})
-  // const [isRatingChecked, setIsRatingChecked] = useState<boolean>(false)
   const [filteredProducts, setFilteredProducts] = useState<Array<Product>>([])
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
-  // const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
   const [rating, setRating] = useState<number | null | undefined>(0)
 
   return (

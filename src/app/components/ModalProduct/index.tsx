@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
+import { Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, Modal, Card, CardMedia, Divider, Grid, createTheme, ThemeProvider, CardContent, Stack, Button } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
-import banner2 from '../../public/assets/banner2.png'
-import { newPrice } from '@/app/utils/pricesAndDiscounts';
 import { ColorButton } from '../ColorButton';
+import { newPrice } from '@/app/utils/pricesAndDiscounts';
+import banner2 from '../../public/assets/banner2.png'
 
 interface ModalProduct {
   product: Product
@@ -18,8 +18,8 @@ interface ModalProduct {
 const ModalProduct: React.FC<ModalProduct> = ({ product, setIsModalOpen, isModalOpen, pricePerWeek }) => {
   const router = useRouter()
   const handleClose = () => setIsModalOpen(false)
-  const firstPointPosition = product.description.indexOf('.');
-  const newDescription = firstPointPosition !== -1 ? product.description.substring(0, firstPointPosition + 1) : product.description;
+  const firstPointPosition = product.description.indexOf('.')
+  const newDescription = firstPointPosition !== -1 ? product.description.substring(0, firstPointPosition + 1) : product.description
 
   const redirectProductDetail = (categoryName: string, id: number) => {
     const newCategoryName = categoryName.toLowerCase()
@@ -129,7 +129,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    // p: 4,
     zIndex: 1000
   },
   boxText: {

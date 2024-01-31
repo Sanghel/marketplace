@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { createTheme, ThemeProvider, Divider, Box, FormGroup, FormControlLabel, Checkbox, Typography, Rating } from '@mui/material';
-import FilterPrice from '../FilterPrice';
-import { useEffect, useState } from 'react';
-import { useMacropayContext } from '@/app/context';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { Divider, Box, Typography, Rating } from '@mui/material';
+import { useMacropayContext } from '@/app/context';
 import { brands } from '@/app/[category]/page';
+import FilterPrice from '../FilterPrice';
 
 export default function Sidebar () {
   const [brandsList, setBrandsList] = useState<string[]>()
@@ -90,7 +89,6 @@ export default function Sidebar () {
 const styles = {
   box: {
     width: '100%',
-    // maxWidth: '300px',
     height: '480px',
     bgcolor: 'background.paper',
     boxShadow: '0px 3px 6px #00000029',

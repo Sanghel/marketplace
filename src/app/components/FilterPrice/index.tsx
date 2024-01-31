@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { Stack } from '@mui/material';
 import { useMacropayContext } from '@/app/context';
