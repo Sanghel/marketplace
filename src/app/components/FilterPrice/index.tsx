@@ -1,34 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Stack } from '@mui/material';
 import { useMacropayContext } from '@/app/context';
 
 export default function FilterPrice () {
-  const { minPrice, setMinPrice, maxPrice, setMaxPrice, products, setFilterProductsByRangePrice } = useMacropayContext()
+  const { minPrice, setMinPrice, maxPrice, setMaxPrice, products, filteredProducts, setFilteredProducts } = useMacropayContext()
 
-  const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMinPrice(event.target.value);
-    // let productsByRange
-    // if (!maxPrice) {
-    //   setMaxPrice('99999999')
-    //   productsByRange = products.filter(product => product.price >= Number(event.target.value))
-    // } else {
-    //   productsByRange = products.filter(product => (product.price >= Number(event.target.value) && product.price <= Number(maxPrice)))
-    // }
-    // setFilterProductsByRangePrice([...productsByRange]);
-  };
-
-  const handleMaxPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxPrice(event.target.value);
-    // let productsByRange
-    // if (!minPrice) {
-    //   setMinPrice('0')
-    //   productsByRange = products.filter(product => product.price <= Number(event.target.value))
-    // } else {
-    //   productsByRange = products.filter(product => (product.price <= Number(event.target.value) && product.price >= Number(minPrice)))
-    // }
-    // setFilterProductsByRangePrice([...productsByRange]);
-  };
+  useEffect(() => {
+    const productsByRange = products.filter(product => {
+      const cumplePrecioMinimo = minPrice === '' || product.price >= parseFloat(minPrice)
+      const cumplePrecioMaximo = maxPrice === '' || product.price <= parseFloat(maxPrice)
+      return cumplePrecioMinimo && cumplePrecioMaximo
+    })
+    setFilteredProducts(productsByRange)
+    
+  }, [minPrice, maxPrice])
 
   return (
     <Stack
@@ -41,18 +27,18 @@ export default function FilterPrice () {
     >
       <TextField
         label="Min"
-        type="number"
+        type="text"
         value={minPrice}
-        onChange={handleMinPriceChange}
+        onChange={(e) =>  setMinPrice(e.target.value)}
         variant="outlined"
         margin="normal"
       />
       <span>-</span>
       <TextField
         label="Max"
-        type="number"
+        type="text"
         value={maxPrice}
-        onChange={handleMaxPriceChange}
+        onChange={e => setMaxPrice(e.target.value)}
         variant="outlined"
         margin="normal"
       />

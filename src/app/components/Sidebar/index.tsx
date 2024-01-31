@@ -10,57 +10,50 @@ export default function Sidebar () {
   const [brandsList, setBrandsList] = useState<string[]>()
   const { products, filteredProducts, setFilteredProducts, rating, setRating, brandChecked, setBrandChecked, ratingChecked, setRatingChecked } = useMacropayContext()
   const params = useParams()
-  const idsUnicos = new Set();
-  // const idsUnicos = new Set();
 
   const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value, event.target.checked);
     setBrandChecked({ ...brandChecked, [event.target.value]: event.target.checked })
     if (event.target.checked && filteredProducts.length === 0) {
       const productsFilter = products.filter(product => product.brand === event.target.value)
-      setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
+      setFilteredProducts(productsFilter)
     } else if (event.target.checked && filteredProducts.length !== 0) {
-      const productsFilter = filteredProducts.filter(product => {
-        if (product.brand === event.target.value && idsUnicos.has(product.id)) {
-          idsUnicos.add(product.id);
-          return true;
-        } else {
-          return false
-        }
-      })
+      const productsFilter = products.filter(product => product.brand === event.target.value)
       setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
     } else {
       const productsFilter = filteredProducts.filter(product => product.brand !== event.target.value)
       setFilteredProducts([...productsFilter])
     }
   }
-  const handleRating = (event: React.SyntheticEvent<Element, Event>, newValue: number | null | undefined) => {
-    const newRatingValue = newValue === rating ? 0 : newValue;
 
-    if (!newRatingValue && filteredProducts.length === 0) {
-      setFilteredProducts([]);
-    } else if (newRatingValue && filteredProducts.length !== 0) {
-      const productsFilter = filteredProducts.filter(product => {
-        if ((product.stars === newRatingValue) && idsUnicos.has(product.id)) {
-          idsUnicos.add(product.id);
-          return true;
-        } else {
-          return false
-        }
-      })
-      setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
-    } else {
-      return
-      const productsFilter = filteredProducts.filter(product => product.stars !== newRatingValue)
-      setFilteredProducts([...productsFilter])
-    }
+  // const handleRating = (event: React.SyntheticEvent<Element, Event>, newValue: number | null | undefined) => {
+  //   const newRatingValue = newValue === rating ? 0 : newValue;
+
+  //   if (!newRatingValue && filteredProducts.length === 0) {
+  //     setFilteredProducts([]);
+  //   } else if (newRatingValue && filteredProducts.length !== 0) {
+  //     const productsFilter = filteredProducts.filter(product => {
+  //       if ((product.stars === newRatingValue) && idsUnicos.has(product.id)) {
+  //         idsUnicos.add(product.id);
+  //         return true;
+  //       } else {
+  //         return false
+  //       }
+  //     })
+  //     setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
+  //   } else {
+  //     return
+  //     const productsFilter = filteredProducts.filter(product => product.stars !== newRatingValue)
+  //     setFilteredProducts([...productsFilter])
+  //   }
     
-    setRating(newRatingValue)
-    console.log(newRatingValue)
-    console.log(rating)
+  //   setRating(newRatingValue)
+  //   console.log(newRatingValue)
+  //   console.log(rating)
 
 
 
-  }
+  // }
 
   useEffect(() => {
     if (params.category === 'shoes') setBrandsList(brands.shoes)
@@ -86,7 +79,7 @@ export default function Sidebar () {
         <Rating
           name="simple-controlled"
           value={rating}
-          onChange={(event, newValue) => handleRating(event, newValue)}
+          // onChange={(event, newValue) => handleRating(event, newValue)}
           sx={{ margin: '1rem 0 0 1rem' }}
         />
       </Box>

@@ -14,24 +14,12 @@ export default function RootLayout({
 
 
   const [products, setProducts] = useState<Array<Product>>([])
-  const [ratingChecked, setRatingChecked] = useState<{}>({
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false
-  })
-  const [brandChecked, setBrandChecked] = useState<{}>({
-    brand1: false,
-    brand2: false,
-    brand3: false,
-    brand4: false,
-    brand5: false
-  })
+  const [ratingChecked, setRatingChecked] = useState<{} | undefined>()
+  const [brandChecked, setBrandChecked] = useState<{}>({})
   // const [isRatingChecked, setIsRatingChecked] = useState<boolean>(false)
   const [filteredProducts, setFilteredProducts] = useState<Array<Product>>([])
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [minPrice, setMinPrice] = useState<string>('');
+  const [maxPrice, setMaxPrice] = useState<string>('');
   // const [filterProductsByRangePrice, setFilterProductsByRangePrice] = useState<Array<Product>>([])
   const [rating, setRating] = useState<number | null | undefined>(0)
 
@@ -52,13 +40,10 @@ export default function RootLayout({
             setMinPrice,
             maxPrice,
             setMaxPrice,
-            // filterProductsByRangePrice,
-            // setFilterProductsByRangePrice,
             rating,
             setRating,
             ratingChecked,
             setRatingChecked,
-
           }}
         >
 
