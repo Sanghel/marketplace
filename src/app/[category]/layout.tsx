@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Container, createTheme, ThemeProvider, Typography } from "@mui/material";
 import { MacropayContextProvider } from "../context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -22,7 +22,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body style={{ position: "relative" }}>
         <ThemeProvider theme={theme}>
         <Header />
         <MacropayContextProvider
@@ -48,6 +48,14 @@ export default function RootLayout({
         </MacropayContextProvider>
         <Footer />
         </ThemeProvider>
+        <Container sx={styles.floatDiv}>
+          <Typography variant='h5' sx={styles.floatDiv.text1}>
+            COMPRA A
+          </Typography>
+          <Typography variant='h4' sx={styles.floatDiv.text2}>
+            CRÉDITO
+          </Typography>
+        </Container>
       </body>
     </html>
   );
@@ -79,3 +87,32 @@ const theme = createTheme({
     }
   }
 });
+
+const styles = {
+  floatDiv: {
+    width: '250px',
+    height: '250px',
+    backgroundColor: '#FFD300',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    clipPath: 'ellipse(130px 130px at 85% 15%)',
+    zIndex:1000,
+    '@media (max-width: 768px)': {
+      display: 'none'
+    },
+    text1: {
+      transform: 'rotate(45deg)',
+      color: '#fff',
+      margin: '25px 0 0 50px',
+      paddingLeft: '65px',
+      width: '200px'
+    },
+    text2: {
+      transform: 'rotate(45deg)',
+      color: '#fff',
+      margin: '0 0 0px 75px',
+      padding: '0 0 0 0px'
+    },
+  }
+}

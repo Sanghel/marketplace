@@ -28,7 +28,7 @@ export default function Header() {
             justifyContent="space-between"
             alignItems="center"
             spacing={2}
-            sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '160px', position: 'relative' }}
+            sx={{ display: { xs: 'none', md: 'flex' }, '@media (max-width: 1750px)': { marginRight: '160px' }, position: 'relative', marginRight: '50px' }}
           >
             <ColorButton variant="contained" color="secondary" sx={{ textTransform: 'none', py: '0.8rem' }}>Crea tu Cuenta</ColorButton>
             <Button variant="text" color="secondary"  sx={{ textTransform: 'none', py: '0.8rem' }}>Iniciar Sesion</Button>
@@ -36,14 +36,6 @@ export default function Header() {
               <ShoppingCartOutlinedIcon color="primary" />
             </div>
           </Stack>
-          <Container sx={styles.floatDiv}>
-            <Typography variant='h5' sx={styles.floatDiv.text1}>
-              COMPRA A
-            </Typography>
-            <Typography variant='h4' sx={styles.floatDiv.text2}>
-              CRÉDITO
-            </Typography>
-          </Container>
         </Stack>
       </Container>
       <Navbar />
@@ -60,31 +52,5 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     padding: '0!important',
-  },
-  floatDiv: {
-    width: '250px',
-    height: '250px',
-    backgroundColor: '#FFD300',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    clipPath: 'ellipse(130px 130px at 85% 15%)',
-    zIndex:1000,
-    '@media (max-width: 768px)': {
-      display: 'none'
-    },
-    text1: {
-      transform: 'rotate(45deg)',
-      color: '#fff',
-      margin: '25px 0 0 50px',
-      paddingLeft: '65px',
-      width: '200px'
-    },
-    text2: {
-      transform: 'rotate(45deg)',
-      color: '#fff',
-      margin: '0 0 0px 75px',
-      padding: '0 0 0 0px'
-    },
   }
 }

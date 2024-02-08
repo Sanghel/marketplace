@@ -20,6 +20,8 @@ body {
   color: #013E9B;
   background-color: #EBEFF4;
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @layer utilities {
