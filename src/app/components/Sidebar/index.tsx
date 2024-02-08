@@ -7,7 +7,7 @@ import FilterPrice from '../FilterPrice';
 
 export default function Sidebar () {
   const [brandsList, setBrandsList] = useState<string[]>()
-  const { products, filteredProducts, setFilteredProducts, rating, setRating, brandChecked, setBrandChecked, ratingChecked, setRatingChecked } = useMacropayContext()
+  const { products, filteredProducts, setFilteredProducts, rating, setRating, brandChecked, setBrandChecked } = useMacropayContext()
   const params = useParams()
 
   const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,34 +25,17 @@ export default function Sidebar () {
     }
   }
 
-  // const handleRating = (event: React.SyntheticEvent<Element, Event>, newValue: number | null | undefined) => {
-  //   const newRatingValue = newValue === rating ? 0 : newValue;
+  const handleRating = (event: React.SyntheticEvent<Element, Event>, newValue: number | null | undefined) => {
+    const newRatingValue = newValue === rating ? 0 : newValue;
+    setRating(newRatingValue)
 
-  //   if (!newRatingValue && filteredProducts.length === 0) {
-  //     setFilteredProducts([]);
-  //   } else if (newRatingValue && filteredProducts.length !== 0) {
-  //     const productsFilter = filteredProducts.filter(product => {
-  //       if ((product.stars === newRatingValue) && idsUnicos.has(product.id)) {
-  //         idsUnicos.add(product.id);
-  //         return true;
-  //       } else {
-  //         return false
-  //       }
-  //     })
-  //     setFilteredProducts(prevFilterProducts => [...prevFilterProducts, ...productsFilter])
-  //   } else {
-  //     return
-  //     const productsFilter = filteredProducts.filter(product => product.stars !== newRatingValue)
-  //     setFilteredProducts([...productsFilter])
-  //   }
-    
-  //   setRating(newRatingValue)
-  //   console.log(newRatingValue)
-  //   console.log(rating)
-
-
-
-  // }
+    if (!newRatingValue) {
+      setFilteredProducts([]);
+    } else {
+      const productsFilter = products.filter(product => product.stars === newRatingValue)
+      setFilteredProducts(productsFilter)
+    }
+  }
 
   useEffect(() => {
     if (params.category === 'shoes') setBrandsList(brands.shoes)
@@ -78,7 +61,7 @@ export default function Sidebar () {
         <Rating
           name="simple-controlled"
           value={rating}
-          // onChange={(event, newValue) => handleRating(event, newValue)}
+          onChange={(event, newValue) => handleRating(event, newValue)}
           sx={{ margin: '1rem 0 0 1rem' }}
         />
       </Box>

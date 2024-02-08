@@ -6,8 +6,6 @@ import { createSafeContext } from '../utils/createSafeContext'
 type MacropayContextType = {
   brandChecked: {}
   setBrandChecked: Dispatch<SetStateAction<{}>>
-  ratingChecked: {} | undefined
-  setRatingChecked: Dispatch<SetStateAction<{} | undefined>>
   filteredProducts: Product[]
   setFilteredProducts: Dispatch<SetStateAction<Product[]>>
   products: Product[]

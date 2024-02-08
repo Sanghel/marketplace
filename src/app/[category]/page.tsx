@@ -16,7 +16,7 @@ import SkeletonComponent from '../components/Skeleton';
 
 export default function CategoryPage() {
   const params = useParams()
-  const { products, setProducts, filteredProducts, minPrice, maxPrice, brandChecked, ratingChecked, setFilteredProducts } = useMacropayContext()
+  const { products, setProducts, filteredProducts, minPrice, maxPrice, brandChecked, rating, setFilteredProducts } = useMacropayContext()
   const isAnyBrandChecked = Object.values(brandChecked).includes(true)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function CategoryPage() {
             </Grid>
             <Grid item sm={12} md={9} lg={10} sx={styles.gridContainerCards}>
               <Grid container gap={2} sx={{ width: '100%' }} columns={{xs: 6,  sm: 13, md: 13, lg: 13 }}>
-                {(filteredProducts.length === 0 && !isAnyBrandChecked && !minPrice && !maxPrice) && products?.map((product, idx) => (
+                {(filteredProducts.length === 0 && !isAnyBrandChecked && !minPrice && !maxPrice && !rating) && products?.map((product, idx) => (
                   <Grid item xs={12} sm={6} lg={4} key={idx}>
                     <ProductCard product={product} />
                   </Grid>
